@@ -48,16 +48,6 @@ export default function About() {
                   <p><a href="https://www.upwork.com/freelancers/~017414ed3a00e19ec0" className="text-blue-600 dark:text-blue-400 hover:underline">Upwork</a></p>
                 </div>
               </div>
-              
-              <div className="mt-6">
-                <a 
-                  href="/cv/carlos-freund-cv.pdf"
-                  className="inline-flex px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
-                  download
-                >
-                  {t('downloadCV')}
-                </a>
-              </div>
             </div>
           </div>
           
