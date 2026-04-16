@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "heroTitle": "Carlos Freund",
+    "heroSubtitle": "Ingeniero Backend Senior · Integración de IA · Trabaja Autónomamente",
+    "locationBadge": "Belice, UTC-6",
+    "valueProp1": "15 años de experiencia en Java/Kotlin backend",
+    "valueProp1Description": "Profunda experiencia en la construcción de sistemas backend escalables y listos para producción con Java y Kotlin.",
+    "valueProp2": "Integración de IA en producción — no prototipos",
+    "valueProp2Description": "Integración real de IA en sistemas existentes — servidores MCP, gateways LLM, arquitecturas de agentes.",
+    "valueProp3": "Contribuidor Open-Source: OpenHands, litellm",
+    "valueProp3Description": "Contribuidor activo en proyectos open-source de IA importantes con PRs fusionados e impacto real.",
+    "ctaWork": "Ver mi trabajo",
+    "ctaContact": "Reservar llamada",
+    "featuredProjects": "Proyectos Destacados",
+    "featuredProjectsSubtitle": "Una selección de mi trabajo reciente"
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "work": "Trabajos",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "About": {
+    "title": "Acerca de Carlos",
+    "timezone": "Zona horaria",
+    "availability": "Disponibilidad",
+    "languages": "Idiomas",
+    "downloadCV": "Descargar CV (PDF)",
+    "techStackTitle": "Habilidades Técnicas"
+  },
+  "Work": {
+    "title": "Trabajos & Portfolio"
+  },
+  "Blog": {
+    "title": "Blog",
+    "readingTime": "{minutes} min de lectura",
+    "tags": "Etiquetas"
+  },
+  "Contact": {
+    "title": "Contacto",
+    "intro": "Hablemos de su proyecto y cómo puedo ayudar",
+    "bookCall": "Reservar llamada de 30 minutos",
+    "scheduleCall": "Programar una llamada",
+    "openCalendly": "Abrir Calendly Scheduler →",
+    "calendlyDescription": "Haga clic para programar una llamada de 30 minutos cuando le convenga",
+    "formName": "Nombre",
+    "formEmail": "Correo electrónico",
+    "formMessage": "Mensaje",
+    "formSubmit": "Enviar mensaje",
+    "formSuccess": "¡Mensaje enviado exitosamente!",
+    "formError": "Error al enviar. Por favor intente de nuevo.",
+    "timezoneText": "Actualmente son las {time} donde estoy (UTC-6)",
+    "availabilityStatus": "Disponible para proyectos en zona horaria de EE. UU.",
+    "sendMessage": "Enviar un mensaje",
+    "formPlaceholder": "Cuénteme sobre su proyecto, cronograma y cómo puedo ayudar...",
+    "directLinks": "Enlaces directos"
+  },
+  "Footer": {
+    "copyright": "© 2026 Carlos Freund"
+  }
+}
