@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -94,8 +96,8 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/work/openhands" className="group cursor-pointer block">
-              <div className="h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-white text-3xl">🤖</span>
+              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                <img src="/openhands-merge-commits.png" alt="OpenHands AI Agent" className="w-full h-full object-cover" />
               </div>
               <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 OpenHands AI Agent
@@ -104,8 +106,8 @@ export default function Home() {
             </Link>
             
             <Link href="/work/troy-comms" className="group cursor-pointer block">
-              <div className="h-32 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-white text-3xl">📧</span>
+              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                <img src="/troy-email.png" alt="troy Comms System" className="w-full h-full object-cover" />
               </div>
               <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 troy Comms System
@@ -114,8 +116,8 @@ export default function Home() {
             </Link>
             
             <Link href="/work/dpvcontrol" className="group cursor-pointer block">
-              <div className="h-32 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-white text-3xl">🤿</span>
+              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                <img src="/dpvtop2.jpg" alt="DPVControl Firmware" className="w-full h-full object-cover" />
               </div>
               <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 DPVControl Firmware
@@ -124,8 +126,8 @@ export default function Home() {
             </Link>
             
             <Link href="/work/ai-shell-loop" className="group cursor-pointer block">
-              <div className="h-32 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-white text-3xl">💻</span>
+              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                <img src="/ai-shell-loop.png" alt="ai-shell-loop" className="w-full h-full object-cover" />
               </div>
               <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 ai-shell-loop

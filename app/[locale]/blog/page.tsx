@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { promises as fs } from 'fs';
