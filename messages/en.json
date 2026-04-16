@@ -4,10 +4,15 @@
     "heroSubtitle": "Senior Backend Engineer · AI Integration · Ships Autonomously",
     "locationBadge": "Belize, UTC-6",
     "valueProp1": "15 years of Java/Kotlin backend depth",
+    "valueProp1Description": "Deep expertise in building scalable, production-ready backend systems with Java and Kotlin.",
     "valueProp2": "Production AI integration — not prototypes",
+    "valueProp2Description": "Real AI integration into existing systems — MCP servers, LLM gateways, agent architectures.",
     "valueProp3": "Open-source contributor: OpenHands, litellm",
+    "valueProp3Description": "Active contributor to major AI open-source projects with merged PRs and real impact.",
     "ctaWork": "View my work",
-    "ctaContact": "Book a call"
+    "ctaContact": "Book a call",
+    "featuredProjects": "Featured Projects",
+    "featuredProjectsSubtitle": "A selection of my recent work"
   },
   "Navigation": {
     "home": "Home",
@@ -34,7 +39,11 @@
   },
   "Contact": {
     "title": "Get in Touch",
+    "intro": "Let's discuss your project and how I can help",
     "bookCall": "Book a 30-minute call",
+    "scheduleCall": "Schedule a Call",
+    "openCalendly": "Open Calendly Scheduler →",
+    "calendlyDescription": "Click to schedule a 30-minute call at your convenience",
     "formName": "Name",
     "formEmail": "Email",
     "formMessage": "Message",
@@ -42,6 +51,9 @@
     "formSuccess": "Message sent successfully!",
     "formError": "Error sending message. Please try again.",
     "timezoneText": "It's currently {time} where I am (UTC-6)",
+    "availabilityStatus": "Available for US timezone projects",
+    "sendMessage": "Send a Message",
+    "formPlaceholder": "Tell me about your project, timeline, and how I can help...",
     "directLinks": "Direct Links"
   },
   "Footer": {

@@ -53,7 +53,7 @@ export default function Home() {
                 {t('valueProp1')}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Deep expertise in building scalable, production-ready backend systems with Java and Kotlin.
+                {t('valueProp1Description')}
               </p>
             </div>
             
@@ -65,7 +65,7 @@ export default function Home() {
                 {t('valueProp2')}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Real AI integration into existing systems — MCP servers, LLM gateways, agent architectures.
+                {t('valueProp2Description')}
               </p>
             </div>
             
@@ -77,7 +77,7 @@ export default function Home() {
                 {t('valueProp3')}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Active contributor to major AI open-source projects with merged PRs and real impact.
+                {t('valueProp3Description')}
               </p>
             </div>
           </div>
@@ -88,9 +88,9 @@ export default function Home() {
       <section className="py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Featured Projects</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('featuredProjects')}</h2>
             <p className="text-xl text-gray-600 dark:text-gray-400">
-              A selection of my recent work
+              {t('featuredProjectsSubtitle')}
             </p>
           </div>
           

@@ -4,10 +4,15 @@
     "heroSubtitle": "Senior Backend Engineer · KI-Integration · Arbeitet Autonom",
     "locationBadge": "Belize, UTC-6",
     "valueProp1": "15 Jahre Java/Kotlin Backend-Erfahrung",
+    "valueProp1Description": "Tiefe Expertise im Aufbau skalierbarer, produktionsreifer Backend-Systeme mit Java und Kotlin.",
     "valueProp2": "Produktive KI-Integration — keine Prototypen",
+    "valueProp2Description": "Echte KI-Integration in bestehende Systeme — MCP-Server, LLM-Gateways, Agentenarchitekturen.",
     "valueProp3": "Open-Source Mitwirkender: OpenHands, litellm",
+    "valueProp3Description": "Aktiver Mitwirkender an großen Open-Source-KI-Projekten mit gemergten PRs und echtem Impact.",
     "ctaWork": "Meine Arbeit",
-    "ctaContact": "Termin vereinbaren"
+    "ctaContact": "Termin vereinbaren",
+    "featuredProjects": "Vorgestellte Projekte",
+    "featuredProjectsSubtitle": "Eine Auswahl meiner aktuellen Arbeiten"
   },
   "Navigation": {
     "home": "Start",
@@ -34,7 +39,11 @@
   },
   "Contact": {
     "title": "Kontakt",
+    "intro": "Lassen Sie uns über Ihr Projekt und wie ich helfen kann sprechen",
     "bookCall": "30-Minuten Termin buchen",
+    "scheduleCall": "Termin vereinbaren",
+    "openCalendly": "Calendly Scheduler öffnen →",
+    "calendlyDescription": "Klicken Sie, um einen 30-minütigen Termin zu vereinbaren",
     "formName": "Name",
     "formEmail": "E-Mail",
     "formMessage": "Nachricht",
@@ -42,6 +51,9 @@
     "formSuccess": "Nachricht erfolgreich gesendet!",
     "formError": "Fehler beim Senden. Bitte versuchen Sie es erneut.",
     "timezoneText": "Es ist gerade {time} bei mir (UTC-6)",
+    "availabilityStatus": "Verfügbar für Projekte in US-Zeitzonen",
+    "sendMessage": "Nachricht senden",
+    "formPlaceholder": "Erzählen Sie mir von Ihrem Projekt, Zeitplan und wie ich helfen kann...",
     "directLinks": "Direkte Links"
   },
   "Footer": {

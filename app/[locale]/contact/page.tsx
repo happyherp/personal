@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useTranslations } from "next-intl";
 
-const CalendlyEmbed = () => {
+const CalendlyEmbed = ({ t }: { t: any }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h3 className="text-lg font-semibold mb-4">Schedule a Call</h3>
+      <h3 className="text-lg font-semibold mb-4">{t('scheduleCall')}</h3>
       <div className="h-96 bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
         <a 
           href="https://calendly.com/carlosfreund/30min"
@@ -14,11 +14,11 @@ const CalendlyEmbed = () => {
           rel="noopener noreferrer"
           className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors inline-flex items-center"
         >
-          Open Calendly Scheduler →
+          {t('openCalendly')}
         </a>
       </div>
       <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 text-center">
-        Click to schedule a 30-minute call at your convenience
+        {t('calendlyDescription')}
       </p>
     </div>
   );
@@ -63,7 +63,7 @@ export default function Contact() {
         <header className="text-center mb-12">
           <h1 className="text-4xl font-bold font-mono mb-4">{t('title')}</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            Let's discuss your project and how I can help
+            {t('intro')}
           </p>
         </header>
         
@@ -73,14 +73,14 @@ export default function Contact() {
             {t('timezoneText', { time: currentTime })}
           </p>
           <p className="text-center text-sm text-blue-700 dark:text-blue-300 mt-2">
-            Available for US timezone projects
+            {t('availabilityStatus')}
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div>
-            <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
+            <h2 className="text-2xl font-bold mb-6">{t('sendMessage')}</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -121,7 +121,7 @@ export default function Contact() {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  placeholder="Tell me about your project, timeline, and how I can help..."
+                  placeholder={t('formPlaceholder')}
                 />
               </div>
               
@@ -148,7 +148,7 @@ export default function Contact() {
           
           {/* Calendly Embed */}
           <div>
-            <CalendlyEmbed />
+            <CalendlyEmbed t={t} />
           </div>
         </div>
         
