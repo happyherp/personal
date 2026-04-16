@@ -1,0 +1,50 @@
+{
+  "Home": {
+    "heroTitle": "Carlos Freund",
+    "heroSubtitle": "Ingeniero Backend Senior · Integración de IA · Trabaja Autónomamente",
+    "locationBadge": "Belice, UTC-6",
+    "valueProp1": "15 años de experiencia en Java/Kotlin backend",
+    "valueProp2": "Integración de IA en producción — no prototipos",
+    "valueProp3": "Contribuidor Open-Source: OpenHands, litellm",
+    "ctaWork": "Ver mi trabajo",
+    "ctaContact": "Reservar llamada"
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "work": "Trabajos",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "About": {
+    "title": "Acerca de Carlos",
+    "timezone": "Zona horaria",
+    "availability": "Disponibilidad",
+    "languages": "Idiomas",
+    "downloadCV": "Descargar CV (PDF)",
+    "techStackTitle": "Habilidades Técnicas"
+  },
+  "Work": {
+    "title": "Trabajos & Portfolio"
+  },
+  "Blog": {
+    "title": "Blog",
+    "readingTime": "{minutes} min de lectura",
+    "tags": "Etiquetas"
+  },
+  "Contact": {
+    "title": "Contacto",
+    "bookCall": "Reservar llamada de 30 minutos",
+    "formName": "Nombre",
+    "formEmail": "Correo electrónico",
+    "formMessage": "Mensaje",
+    "formSubmit": "Enviar mensaje",
+    "formSuccess": "¡Mensaje enviado exitosamente!",
+    "formError": "Error al enviar. Por favor intente de nuevo.",
+    "timezoneText": "Actualmente son las {time} donde estoy (UTC-6)",
+    "directLinks": "Enlaces directos"
+  },
+  "Footer": {
+    "copyright": "© 2026 Carlos Freund"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "Home": {
+    "heroTitle": "Carlos Freund",
+    "heroSubtitle": "Senior Backend Engineer · AI Integration · Ships Autonomously",
+    "locationBadge": "Belize, UTC-6",
+    "valueProp1": "15 years of Java/Kotlin backend depth",
+    "valueProp2": "Production AI integration — not prototypes",
+    "valueProp3": "Open-source contributor: OpenHands, litellm",
+    "ctaWork": "View my work",
+    "ctaContact": "Book a call"
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "work": "Work",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "About": {
+    "title": "About Carlos",
+    "timezone": "Timezone",
+    "availability": "Availability",
+    "languages": "Languages",
+    "downloadCV": "Download CV (PDF)",
+    "techStackTitle": "Technical Skills"
+  },
+  "Work": {
+    "title": "Work & Portfolio"
+  },
+  "Blog": {
+    "title": "Blog",
+    "readingTime": "{minutes} min read",
+    "tags": "Tags"
+  },
+  "Contact": {
+    "title": "Get in Touch",
+    "bookCall": "Book a 30-minute call",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formMessage": "Message",
+    "formSubmit": "Send Message",
+    "formSuccess": "Message sent successfully!",
+    "formError": "Error sending message. Please try again.",
+    "timezoneText": "It's currently {time} where I am (UTC-6)",
+    "directLinks": "Direct Links"
+  },
+  "Footer": {
+    "copyright": "© 2026 Carlos Freund"
+  }
+}
