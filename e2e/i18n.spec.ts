@@ -70,7 +70,7 @@ test.describe('Internationalization Tests', () => {
         
         // Verify all navigation links are translated
         for (const [_, text] of Object.entries(navTexts)) {
-          await expect(page.getByText(text)).toBeVisible();
+          await expect(page.getByText(text, { exact: true })).toBeVisible();
         }
       });
     }

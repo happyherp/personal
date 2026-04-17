@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class I18nHelper {
   constructor(private page: Page) {}
@@ -10,19 +10,19 @@ export class I18nHelper {
     await this.page.waitForURL(url => {
       const urlStr = url.toString();
       if (targetLang === 'en') {
-        return !urlStr.match(/\/de\//) && !urlStr.match(/\/es\//);
+        return !urlStr.match(/\/de(\/|$)/) && !urlStr.match(/\/es(\/|$)/);
       }
-      return urlStr.includes(`/${targetLang}/`);
+      return new RegExp(`/${targetLang}(/|$)`).test(urlStr);
     }, { timeout: 10000 });
   }
 
   async verifyCurrentLanguage(expectedLang: string) {
     const currentUrl = this.page.url();
     if (expectedLang === 'en') {
-      expect(currentUrl).not.toMatch(/\/de\//);
-      expect(currentUrl).not.toMatch(/\/es\//);
+      expect(currentUrl).not.toMatch(/\/de(\/|$)/);
+      expect(currentUrl).not.toMatch(/\/es(\/|$)/);
     } else {
-      expect(currentUrl).toContain(`/${expectedLang}/`);
+      expect(currentUrl).toMatch(new RegExp(`/${expectedLang}(/|$)`));
     }
   }
 
