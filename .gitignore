@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
+*.log
 
 # next.js
 /.next/
@@ -40,3 +44,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# temporary directories
+.agents_tmp/
+tmp/
