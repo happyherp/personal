@@ -1,26 +1,22 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 
-// Mock i18n/request to prevent next-intl import issues
-jest.mock('@/i18n/request', () => ({
-  locales: ['en', 'de', 'es'] as const,
-  localePrefix: 'as-needed',
-  default: jest.fn(),
-}));
-
-// Mock next-intl
-jest.mock('next-intl', () => ({
-  NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
-  useLocale: () => 'en',
-}));
-
-jest.mock('next/navigation', () => ({
+// Mock i18n/navigation to prevent next-intl import issues
+jest.mock('@/i18n/navigation', () => ({
+  routing: {
+    locales: ['en', 'de', 'es'] as const,
+    defaultLocale: 'en',
+    localePrefix: 'as-needed',
+  },
   useRouter: () => ({
     push: jest.fn(),
     replace: jest.fn(),
     prefetch: jest.fn(),
   }),
   usePathname: () => '/',
+}));
+
+jest.mock('next/navigation', () => ({
   useParams: () => ({ locale: 'en' }),
 }));
 import React from 'react';

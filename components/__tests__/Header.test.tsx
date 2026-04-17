@@ -1,11 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { Header } from '../Header';
 
-// Mock i18n/request to prevent next-intl import issues
-jest.mock('@/i18n/request', () => ({
-  locales: ['en', 'de', 'es'] as const,
-  localePrefix: 'as-needed',
-  default: jest.fn(),
+// Mock i18n/navigation to prevent next-intl import issues
+jest.mock('@/i18n/navigation', () => ({
+  routing: {
+    locales: ['en', 'de', 'es'] as const,
+    defaultLocale: 'en',
+    localePrefix: 'as-needed',
+  },
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+  usePathname: () => '/',
 }));
 
 jest.mock('next-intl', () => ({
@@ -13,12 +21,6 @@ jest.mock('next-intl', () => ({
 }));
 
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-  }),
-  usePathname: () => '/',
   useParams: () => ({ locale: 'en' }),
 }));
 
