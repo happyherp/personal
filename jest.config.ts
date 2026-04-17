@@ -12,6 +12,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/app/(.*)$': '<rootDir>/app/$1',
+    '^@/i18n/(.*)$': '<rootDir>/i18n/$1',
   },
   transformIgnorePatterns: [
     'node_modules/(?!(next-intl|use-intl)/)',

@@ -1,10 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import Header from '../Header';
+import { Header } from '../Header';
+
+// Mock i18n/request to prevent next-intl import issues
+jest.mock('@/i18n/request', () => ({
+  locales: ['en', 'de', 'es'] as const,
+  localePrefix: 'as-needed',
+  default: jest.fn(),
+}));
 
 jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
-  NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
-  useLocale: () => 'en',
 }));
 
 jest.mock('next/navigation', () => ({
