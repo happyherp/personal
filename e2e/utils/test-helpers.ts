@@ -7,7 +7,13 @@ export class I18nHelper {
     const select = this.page.locator('select');
     await select.selectOption(targetLang);
     // Wait for navigation to complete
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForURL(url => {
+      const urlStr = url.toString();
+      if (targetLang === 'en') {
+        return !urlStr.match(/\/de\//) && !urlStr.match(/\/es\//);
+      }
+      return urlStr.includes(`/${targetLang}/`);
+    }, { timeout: 10000 });
   }
 
   async verifyCurrentLanguage(expectedLang: string) {
@@ -30,16 +36,16 @@ export class I18nHelper {
         contact: 'Contact',
       },
       de: {
-        home: 'Startseite',
+        home: 'Start',
         about: 'Über mich',
-        work: 'Leistungen',
+        work: 'Arbeiten',
         blog: 'Blog',
         contact: 'Kontakt',
       },
       es: {
         home: 'Inicio',
-        about: 'Sobre mí',
-        work: 'Trabajo',
+        about: 'Acerca de',
+        work: 'Trabajos',
         blog: 'Blog',
         contact: 'Contacto',
       },
