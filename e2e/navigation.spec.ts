@@ -13,11 +13,11 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click About link
-        await page.getByText(navTexts.about).click();
-        
+        await page.locator('header').getByText(navTexts.about).click();
+
         // Verify URL and content
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}about`));
-        await expect(page.getByRole('heading', { name: /About|Über|Sobre/ })).toBeVisible();
+        await expect(page.getByRole('heading', { name: /About|Über|Acerca/ })).toBeVisible();
       });
 
       test('should navigate to Work page', async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Work link
-        await page.getByText(navTexts.work).click();
+        await page.locator('header').getByText(navTexts.work).click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}work`));
@@ -40,7 +40,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Blog link
-        await page.getByText(navTexts.blog).click();
+        await page.locator('header').getByText(navTexts.blog).click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}blog`));
@@ -53,7 +53,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Contact link
-        await page.getByText(navTexts.contact).click();
+        await page.locator('header').getByText(navTexts.contact).click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}contact`));
@@ -67,10 +67,10 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/about' : `/${lang}/about`);
         
         // Click Home link
-        await page.getByText(navTexts.home).click();
-        
+        await page.locator('header').getByText(navTexts.home).click();
+
         // Verify back to home
-        await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}$`));
+        await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang}/?$`));
       });
     });
   }
@@ -83,16 +83,16 @@ test.describe('Navigation Tests', () => {
     
     // Navigate to blog
     const deNav = await i18n.getNavigationText('de');
-    await page.getByText(deNav.blog).click();
-    
+    await page.locator('header').getByText(deNav.blog).click();
+
     // Verify still in German
     await expect(page).toHaveURL(/\/de\/blog/);
-    
+
     // Navigate through a few more pages
-    await page.getByText(deNav.about).click();
+    await page.locator('header').getByText(deNav.about).click();
     await expect(page).toHaveURL(/\/de\/about/);
-    
-    await page.getByText(deNav.contact).click();
+
+    await page.locator('header').getByText(deNav.contact).click();
     await expect(page).toHaveURL(/\/de\/contact/);
   });
 });
