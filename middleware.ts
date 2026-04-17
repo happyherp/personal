@@ -14,5 +14,5 @@ export default createMiddleware({
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ['/', '/(de|es)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)'],
+  matcher: ['/', '/(de|es)/:path*', '/((?!api|_next|_vercel|.*\\..*|sitemap.xml|robots.txt).*)'],
 };
