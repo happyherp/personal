@@ -13,11 +13,11 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click About link
-        await page.getByText(navTexts.about).click();
+        await page.getByRole('navigation').getByRole('link', { name: navTexts.about, exact: true }).first().click();
         
         // Verify URL and content
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}about`));
-        await expect(page.getByRole('heading', { name: /About|Über|Sobre/ })).toBeVisible();
+        await expect(page.getByRole('heading', { name: /About|Über|Sobre|Acerca de/i }).first()).toBeVisible();
       });
 
       test('should navigate to Work page', async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Work link
-        await page.getByText(navTexts.work).click();
+        await page.getByRole('navigation').getByRole('link', { name: navTexts.work, exact: true }).first().click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}work`));
@@ -40,7 +40,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Blog link
-        await page.getByText(navTexts.blog).click();
+        await page.getByRole('navigation').getByRole('link', { name: navTexts.blog, exact: true }).first().click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}blog`));
@@ -53,7 +53,7 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
         
         // Click Contact link
-        await page.getByText(navTexts.contact).click();
+        await page.getByRole('navigation').getByRole('link', { name: navTexts.contact, exact: true }).first().click();
         
         // Verify URL
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}contact`));
@@ -67,11 +67,35 @@ test.describe('Navigation Tests', () => {
         await page.goto(lang === 'en' ? '/about' : `/${lang}/about`);
         
         // Click Home link
-        await page.getByText(navTexts.home).click();
+        await page.getByRole('navigation').getByRole('link', { name: navTexts.home, exact: true }).first().click();
         
         // Verify back to home
-        await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}$`));
+        await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '(/)?'}$`));
       });
+  test.describe('Mobile Navigation', () => {
+    test.use({ viewport: { width: 375, height: 667 } }); // Mobile viewport
+    
+    test('should toggle mobile menu visibility', async ({ page }) => {
+      await page.goto('/');
+
+      // Desktop items should be hidden
+      const homeLink = page.getByRole('link', { name: 'Home' }).first();
+      await expect(homeLink).toBeHidden();
+
+      // Click the hamburger menu to open
+      await page.getByRole('button', { name: 'Open main menu' }).click();
+
+      // Mobile items should be visible
+      const mobileHomeLink = page.getByRole('link', { name: 'Home' }).last();
+      await expect(mobileHomeLink).toBeVisible();
+
+      // Click a link inside the mobile menu
+      await mobileHomeLink.click();
+
+      // Menu should close after clicking a link
+      await expect(mobileHomeLink).toBeHidden();
+    });
+  });
     });
   }
 
@@ -83,16 +107,16 @@ test.describe('Navigation Tests', () => {
     
     // Navigate to blog
     const deNav = await i18n.getNavigationText('de');
-    await page.getByText(deNav.blog).click();
+    await page.getByRole('navigation').getByRole('link', { name: deNav.blog, exact: true }).first().click();
     
     // Verify still in German
     await expect(page).toHaveURL(/\/de\/blog/);
     
     // Navigate through a few more pages
-    await page.getByText(deNav.about).click();
+    await page.getByRole('navigation').getByRole('link', { name: deNav.about, exact: true }).first().click();
     await expect(page).toHaveURL(/\/de\/about/);
     
-    await page.getByText(deNav.contact).click();
+    await page.getByRole('navigation').getByRole('link', { name: deNav.contact, exact: true }).first().click();
     await expect(page).toHaveURL(/\/de\/contact/);
   });
 });
