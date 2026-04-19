@@ -5,54 +5,43 @@ test.describe('Internationalization Tests', () => {
   test.describe('Language Switching', () => {
     test('should switch from English to German', async ({ page }) => {
       const i18n = new I18nHelper(page);
-      
-      // Start on English home page
+
       await page.goto('/');
-      
-      // Verify English content
+
       const enNav = await i18n.getNavigationText('en');
-      await expect(page.getByText(enNav.home)).toBeVisible();
-      
-      // Switch to German
+      await expect(page.locator('[data-testid="main-nav"]').getByText(enNav.home)).toBeVisible();
+
       await i18n.switchLanguage('de');
-      
-      // Verify German content
+
       const deNav = await i18n.getNavigationText('de');
-      await expect(page.getByText(deNav.home)).toBeVisible();
-      
-      // Verify URL contains /de/
+      await expect(page.locator('[data-testid="main-nav"]').getByText(deNav.home)).toBeVisible();
+
       await i18n.verifyCurrentLanguage('de');
     });
 
     test('should switch from German to Spanish', async ({ page }) => {
       const i18n = new I18nHelper(page);
-      
+
       await page.goto('/de');
-      
-      // Switch to Spanish
+
       await i18n.switchLanguage('es');
-      
-      // Verify Spanish content
+
       const esNav = await i18n.getNavigationText('es');
-      await expect(page.getByText(esNav.home)).toBeVisible();
-      
-      // Verify URL contains /es/
+      await expect(page.locator('[data-testid="main-nav"]').getByText(esNav.home)).toBeVisible();
+
       await i18n.verifyCurrentLanguage('es');
     });
 
     test('should switch from Spanish back to English', async ({ page }) => {
       const i18n = new I18nHelper(page);
-      
+
       await page.goto('/es');
-      
-      // Switch to English
+
       await i18n.switchLanguage('en');
-      
-      // Verify English content
+
       const enNav = await i18n.getNavigationText('en');
-      await expect(page.getByText(enNav.home)).toBeVisible();
-      
-      // Verify URL does not contain language prefix
+      await expect(page.locator('[data-testid="main-nav"]').getByText(enNav.home)).toBeVisible();
+
       await i18n.verifyCurrentLanguage('en');
     });
   });
@@ -63,14 +52,14 @@ test.describe('Internationalization Tests', () => {
     for (const lang of languages) {
       test(`should display correct navigation in ${lang}`, async ({ page }) => {
         const i18n = new I18nHelper(page);
-        
+
         await page.goto(lang === 'en' ? '/' : `/${lang}`);
-        
+
         const navTexts = await i18n.getNavigationText(lang);
-        
-        // Verify all navigation links are translated
+        const nav = page.locator('[data-testid="main-nav"]');
+
         for (const [_, text] of Object.entries(navTexts)) {
-          await expect(page.getByText(text, { exact: true })).toBeVisible();
+          await expect(nav.getByText(text, { exact: true })).toBeVisible();
         }
       });
     }

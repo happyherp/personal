@@ -1,196 +1,165 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
+'use client';
 
-interface ProjectDetail {
-  id: string;
-  title: string;
-  description: string;
-  fullDescription: string;
-  tags: string[];
-  links: { label: string; url: string }[];
-}
+import { useState, useEffect, use } from 'react';
+import { notFound } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
+import { PROJECTS, PROJECT_DETAILS } from '@/lib/projects';
 
-const projectDetails: Record<string, ProjectDetail> = {
-  openhands: {
-    id: "openhands",
-    title: "Open Source Contributor: OpenHands AI Agent & litellm",
-    description: "12 merged pull requests in OpenHands (70k+ stars), the leading open-source AI coding agent",
-    fullDescription: `
-      <h2>Contributions to OpenHands</h2>
-      <p>I have 12 merged pull requests in OpenHands (70k+ GitHub stars), the leading open-source AI coding agent. My contributions span the full stack:</p>
-      
-      <ul>
-        <li><strong>Docker container lifecycle</strong> - Improved container management and stability</li>
-        <li><strong>Runtime stability</strong> - Fixed critical bugs affecting agent execution</li>
-        <li><strong>Frontend UX</strong> - Enhanced user experience and interface improvements</li>
-        <li><strong>Build tooling</strong> - Streamlined development and deployment processes</li>
-        <li><strong>Parallel test fixes</strong> - Resolved race conditions in test suites</li>
-        <li><strong>LLM metrics</strong> - Added monitoring and optimization capabilities</li>
-      </ul>
-      
-      <h2>Contributions to litellm</h2>
-      <p>Rewrote the token_counter module in litellm (42k+ stars), fixing a silent bug where tool-call messages caused token counts to collapse. The rewrite included:</p>
-      
-      <ul>
-        <li>Single high-level function architecture</li>
-        <li>Clear separation between text and message counting paths</li>
-        <li>Single-responsibility _count_messages loop</li>
-        <li>Unified tokenizer selection via _get_count_function</li>
-        <li>Comprehensive test suite covering edge cases and permutation-based monotonicity assertions</li>
-      </ul>
-      
-      <p>Working in these codebases required deep understanding of LLM agent architecture, prompt caching, and context-window management.</p>
-    `,
-    tags: ["Python", "AI", "Open Source", "Docker", "Automated Testing"],
-    links: [
-      { label: "OpenHands PRs", url: "https://github.com/OpenHands/OpenHands/pulls" },
-      { label: "litellm Token Counter PR", url: "https://github.com/BerriAI/litellm/pull/10409" }
-    ]
-  },
-  "troy-comms": {
-    id: "troy-comms",
-    title: "Omni-Channel Customer Communication System — troy GmbH",
-    description: "Complete outgoing communication system used across troy's client portfolio",
-    fullDescription: `
-      <h2>Project Overview</h2>
-      <p>I was the main author of the complete outgoing communication system used across troy GmbH's client portfolio. This system handled all customer communications across multiple channels:</p>
-      
-      <h3>Physical Letters</h3>
-      <p>Generated pixel-perfect PDFs from Google Docs templates with dynamic data injection. The system handled the entire pipeline from template selection to print-ready PDF generation, handing off programmatically to a print & mail fulfillment partner. No one at troy ever touched a physical letter.</p>
-      
-      <h3>HTML Emails</h3>
-      <p>Designed and implemented responsive email templates with CSS media queries that adapted the layout for both mobile and desktop clients. The system ensured consistent rendering across all major email clients.</p>
-      
-      <h3>SMS Notifications</h3>
-      <p>Integrated short-form automated SMS notifications into the same communication pipeline, allowing for timely customer alerts and reminders.</p>
-      
-      <h2>Technical Implementation</h2>
-      <ul>
-        <li><strong>Backend:</strong> Kotlin with Spring Framework</li>
-        <li><strong>Template System:</strong> Google Docs API integration</li>
-        <li><strong>PDF Generation:</strong> Custom rendering engine for pixel-perfect output</li>
-        <li><strong>Email Delivery:</strong> Responsive HTML with comprehensive client testing</li>
-        <li><strong>SMS Integration:</strong> Third-party SMS gateway APIs</li>
-        <li><strong>Print Fulfillment:</strong> Automated handoff to printing partners</li>
-      </ul>
-      
-      <p>This system became critical infrastructure for troy GmbH, handling all customer communications across their entire client portfolio.</p>
-    `,
-    tags: ["Kotlin", "Email", "PDF", "SMS", "Print Fulfillment"],
-    links: []
-  },
-  dpvcontrol: {
-    id: "dpvcontrol",
-    title: "ESP32 Firmware for DIY Dive Propulsion Vehicle (DPVControl)",
-    description: "Initial firmware for an open-source DIY dive propulsion vehicle",
-    fullDescription: `
-      <h2>Project Background</h2>
-      <p>I wrote the initial firmware from scratch for a DIY underwater propulsion vehicle (DPV) built around an ESP32 and a 2000W VESC-controlled scooter motor. This was developed on-site with the hardware available for live testing.</p>
-      
-      <h2>Firmware Features</h2>
-      <ul>
-        <li><strong>Motor Control:</strong> Precise speed control via VESC UART interface</li>
-        <li><strong>Reed Switch Input:</strong> Magnetic switch detection for user input</li>
-        <li><strong>Cruise Control:</strong> Maintains constant speed without continuous input</li>
-        <li><strong>Boost Mode:</strong> Temporary power increase for challenging conditions</li>
-        <li><strong>Battery Monitoring:</strong> Real-time voltage and current measurement</li>
-        <li><strong>Leak Detection:</strong> Water intrusion sensors with automatic shutdown</li>
-        <li><strong>NeoPixel LEDs:</strong> Status indication and user feedback</li>
-        <li><strong>Beep/LED Safety Codes:</strong> Audible and visual alerts for various conditions</li>
-        <li><strong>Temperature Monitoring:</strong> Motor and battery temperature tracking</li>
-      </ul>
-      
-      <h2>Technical Specifications</h2>
-      <ul>
-        <li><strong>MCU:</strong> ESP32 with dual-core processing</li>
-        <li><strong>Motor Controller:</strong> VESC (Vedder Electronic Speed Controller)</li>
-        <li><strong>Communication:</strong> UART interface to VESC</li>
-        <li><strong>Development:</strong> PlatformIO framework</li>
-        <li><strong>Language:</strong> C++ with Arduino core</li>
-        <li><strong>Safety:</strong> Multiple redundant safety systems</li>
-      </ul>
-      
-      <h2>Project Evolution</h2>
-      <p>The v1 I wrote was the first version that went into the water. The project has since grown significantly with contributions from the community:</p>
-      <ul>
-        <li>20+ firmware releases with continuous improvements</li>
-        <li>Full REST API for external control and monitoring</li>
-        <li>Web-based GUI for configuration and real-time data</li>
-        <li>Comprehensive test suite</li>
-        <li>OpenAPI specification for API documentation</li>
-      </ul>
-      
-      <p>This project demonstrates my ability to work at the hardware-software boundary, dealing with real-time constraints, safety-critical systems, and embedded Linux environments.</p>
-    `,
-    tags: ["C++", "Embedded", "ESP32", "PlatformIO", "VESC"],
-    links: [
-      { label: "GitHub Repository", url: "https://github.com/BubTec/DPVControl" }
-    ]
-  }
-};
+function Slideshow({ slides }: { slides: { src: string; caption: string }[] }) {
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setIdx((x) => (x + 1) % slides.length), 3200);
+    return () => clearInterval(id);
+  }, [paused, slides.length]);
 
-export default async function ProjectDetail({ params }: PageProps) {
-  const { slug } = await params;
-  const project = projectDetails[slug];
-  
-  if (!project) {
-    notFound();
-  }
-  
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link 
-          href="/work" 
-          className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline mb-8"
-        >
-          ← Back to Portfolio
-        </Link>
-        
-        <header className="mb-12">
-          <h1 className="text-4xl font-bold font-mono mb-4">{project.title}</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">{project.description}</p>
-        </header>
-        
-        <div className="flex flex-wrap gap-2 mb-8">
-          {project.tags.map((tag) => (
-            <span 
-              key={tag} 
-              className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium"
-            >
-              {tag}
-            </span>
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div style={{ position: 'relative', border: '1px solid var(--rule-bright)', background: '#1a1916', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 480, padding: 24 }}>
+          {slides.map((s, k) => (
+            <img key={k} src={s.src} alt={s.caption} style={{
+              position: k === 0 ? 'relative' : 'absolute',
+              maxWidth: 'calc(100% - 48px)',
+              maxHeight: 480,
+              width: 'auto',
+              height: 'auto',
+              opacity: k === idx ? 1 : 0,
+              transition: 'opacity 0.6s ease',
+            }} />
           ))}
         </div>
-        
-        <div 
-          className="prose prose-lg dark:prose-invert max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: project.fullDescription }}
-        />
-        
-        {project.links.length > 0 && (
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h3 className="text-lg font-semibold mb-4">Links & Resources</h3>
-            <div className="space-y-2">
-              {project.links.map((link) => (
-                <div key={link.url}>
-                  <a 
-                    href={link.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {link.label} →
-                  </a>
-                </div>
-              ))}
-            </div>
+        <div style={{ position: 'absolute', bottom: 12, right: 16, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)', background: '#0d0d0bc0', padding: '4px 8px' }}>
+          {String(idx + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+        </div>
+        <button onClick={() => setIdx((x) => (x - 1 + slides.length) % slides.length)} style={{ position: 'absolute', top: '50%', left: 12, transform: 'translateY(-50%)', width: 40, height: 40, background: '#0d0d0bd0', border: '1px solid var(--rule-bright)', color: 'var(--ink)', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
+        <button onClick={() => setIdx((x) => (x + 1) % slides.length)} style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)', width: 40, height: 40, background: '#0d0d0bd0', border: '1px solid var(--rule-bright)', color: 'var(--ink)', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
+      </div>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)', marginTop: 8 }}>↳ {slides[idx].caption}</div>
+    </div>
+  );
+}
+
+function DKV({ k, v, last }: { k: string; v: string; last?: boolean }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: 10, padding: '6px 0', borderBottom: last ? 'none' : '1px dashed var(--rule)' }}>
+      <span style={{ color: 'var(--ink-faint)', fontSize: 10 }}>{k}</span>
+      <span style={{ color: 'var(--ink)', fontSize: 12 }}>{v}</span>
+    </div>
+  );
+}
+
+export default function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const p = PROJECTS.find((pp) => pp.id === slug);
+  if (!p) notFound();
+
+  const d = PROJECT_DETAILS[p.id] || { long: p.summary, bullets: [], links: [] };
+  const pidx = PROJECTS.findIndex((pp) => pp.id === p.id);
+  const prev = PROJECTS[(pidx - 1 + PROJECTS.length) % PROJECTS.length];
+  const next = PROJECTS[(pidx + 1) % PROJECTS.length];
+
+  return (
+    <div className="page" style={{ paddingTop: 48, paddingBottom: 80 }}>
+      <Link href="/work" style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-dim)' }}>← BACK TO INDEX</Link>
+
+      <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'end', borderBottom: '1px solid var(--rule-bright)', paddingBottom: 40 }}>
+        <div>
+          <div className="section-num" style={{ marginBottom: 12 }}>§ {p.no} / {p.year}</div>
+          <h1 className="display" style={{ fontSize: 'clamp(44px, 8vw, 120px)' }}>{p.title}</h1>
+          <p style={{ color: 'var(--ink-dim)', fontSize: 20, maxWidth: 720, marginTop: 20, lineHeight: 1.5 }}>{p.sub}</p>
+        </div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)', textAlign: 'right', lineHeight: 1.8 }}>
+          <div style={{ color: 'var(--ink-faint)' }}>[ ROLE ]</div>
+          <div style={{ color: 'var(--ink)', fontSize: 14 }}>{p.role}</div>
+          <div style={{ color: 'var(--ink-faint)', marginTop: 10 }}>[ STACK ]</div>
+          <div>{p.stack.join(' / ')}</div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 40 }}>
+        {d.slideshow ? (
+          <Slideshow slides={d.slideshow} />
+        ) : (
+          <div style={{ border: '1px solid var(--rule-bright)', background: '#1a1916', padding: 24, display: 'flex', justifyContent: 'center' }}>
+            <img src={p.thumb} style={{ maxWidth: '100%', maxHeight: 480, width: 'auto', height: 'auto', display: 'block' }} alt={p.title} />
           </div>
         )}
+      </div>
+
+      {d.extraImages?.map((ex, i) => (
+        <div key={i} style={{ marginTop: 24 }}>
+          <div style={{ border: '1px solid var(--rule-bright)', background: '#1a1916', padding: 24, display: 'flex', justifyContent: 'center' }}>
+            <img src={ex.src} style={{ maxWidth: '100%', maxHeight: 480, width: 'auto', height: 'auto', display: 'block' }} alt={ex.caption} />
+          </div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)', marginTop: 8 }}>↳ {ex.caption}</div>
+        </div>
+      ))}
+
+      {d.video && (
+        <div style={{ marginTop: 40 }}>
+          <div className="section-num" style={{ marginBottom: 12 }}>§ DEMO VIDEO</div>
+          <div style={{ position: 'relative', border: '1px solid var(--rule-bright)', background: '#1a1916', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+            <iframe src={d.video} title="Demo video" allowFullScreen style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }} />
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginTop: 60, display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 60 }}>
+        <div>
+          <div className="section-num" style={{ marginBottom: 8 }}>§ OVERVIEW</div>
+          <p style={{ fontSize: 18, lineHeight: 1.7, color: 'var(--ink)', margin: 0 }}>{d.long}</p>
+          {d.bullets.length > 0 && (
+            <>
+              <div style={{ height: 40 }} />
+              <div className="section-num" style={{ marginBottom: 8 }}>§ HIGHLIGHTS</div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {d.bullets.map((b, i) => (
+                  <li key={i} style={{ display: 'grid', gridTemplateColumns: '30px 1fr', gap: 12, padding: '10px 0', borderBottom: '1px dashed var(--rule)', fontSize: 15 }}>
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--accent)' }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {d.links.length > 0 && (
+            <>
+              <div style={{ height: 40 }} />
+              <div className="section-num" style={{ marginBottom: 12 }}>§ LINKS</div>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                {d.links.map((l, i) => (
+                  <a key={i} href={l.u} target="_blank" rel="noopener noreferrer" className="btn">{l.l}</a>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.8 }}>
+          <div style={{ border: '1px solid var(--rule-bright)', padding: 20 }}>
+            <div style={{ color: 'var(--ink-faint)', fontSize: 10, letterSpacing: '0.1em', marginBottom: 12 }}>[ AT A GLANCE ]</div>
+            <DKV k="PROJECT" v={p.id} />
+            <DKV k="YEAR" v={p.year} />
+            <DKV k="ROLE" v={p.role} />
+            {p.stars && <DKV k="STARS" v={p.stars} />}
+            <DKV k="STACK" v={p.stack.join(', ')} last />
+          </div>
+        </div>
+      </div>
+
+      <div style={{ height: 100 }} />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'var(--rule-bright)', border: '1px solid var(--rule-bright)' }}>
+        <Link href={`/work/${prev.id}`} style={{ padding: 24, background: 'var(--bg)' }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>← PREV / § {prev.no}</div>
+          <div style={{ fontSize: 20, fontWeight: 600, marginTop: 6 }}>{prev.title}</div>
+        </Link>
+        <Link href={`/work/${next.id}`} style={{ padding: 24, background: 'var(--bg)', textAlign: 'right' }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>NEXT / § {next.no} →</div>
+          <div style={{ fontSize: 20, fontWeight: 600, marginTop: 6 }}>{next.title}</div>
+        </Link>
       </div>
     </div>
   );

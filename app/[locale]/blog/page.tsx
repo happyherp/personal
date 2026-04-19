@@ -1,105 +1,132 @@
 'use client';
 
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { promises as fs } from 'fs';
-import path from 'path';
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { BLOG_POSTS } from '@/lib/blog-data';
 
-interface BlogPost {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-  tags: string[];
-  readingTime: number;
+const ALL_TAGS = ['ALL', ...Array.from(new Set(BLOG_POSTS.flatMap((p) => p.tags)))];
+
+function fmtDate(iso: string) {
+  return new Date(iso)
+    .toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' })
+    .toUpperCase();
 }
 
-async function getBlogPosts(): Promise<BlogPost[]> {
-  // For now, return static blog posts
-  // In the future, this could read from content/blog/en directory
-  return [
-    {
-      slug: "why-i-left-80k-job",
-      title: "Why I Left a €80k Job to Freelance from Belize",
-      description: "The real story behind walking away from corporate security to build a location-independent career in AI integration.",
-      date: "2026-04-20",
-      tags: ["Career", "Remote Work", "AI", "Freelancing"],
-      readingTime: 8
-    },
-    {
-      slug: "medical-chatbot-breach",
-      title: "I Found a Data Breach in a Medical Chatbot — Here's What Happened",
-      description: "How a routine security test revealed critical vulnerabilities in an AI-powered medical e-commerce platform and what I learned about LLM safety.",
-      date: "2026-04-18",
-      tags: ["Security", "AI", "LLM", "Ethical Hacking"],
-      readingTime: 12
-    },
-    {
-      slug: "openhands-contributions",
-      title: "What I Learned Contributing to OpenHands",
-      description: "12 merged pull requests later, here are the key insights about AI agent architecture, prompt caching, and building production-ready LLM systems.",
-      date: "2026-04-15",
-      tags: ["Open Source", "AI", "OpenHands", "LLM"],
-      readingTime: 10
-    }
-  ];
-}
+export default function Blog() {
+  const t = useTranslations('Blog');
+  const [tag, setTag] = useState('ALL');
 
-interface PageProps {
-  params: Promise<{ locale: string }>;
-}
+  const sorted = [...BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+  const filtered = sorted.filter((p) => tag === 'ALL' || p.tags.includes(tag));
+  const featured = tag === 'ALL' ? sorted.find((p) => p.featured) : null;
+  const list = featured ? filtered.filter((p) => p !== featured) : filtered;
 
-export default async function Blog({ params }: PageProps) {
-  const { locale } = await params;
-  const t = await import(`@/messages/${locale}.json`).then(m => m.default.Blog || m.default);
-  const posts = await getBlogPosts();
-  
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold font-mono mb-4">{t?.title || "Blog"}</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 mb-12">
-          Thoughts on AI integration, backend engineering, and building production systems.
-        </p>
-        
-        <div className="space-y-8">
-          {posts.map((post) => (
-            <article 
-              key={post.slug} 
-              className="border-b border-gray-200 dark:border-gray-700 pb-8 last:border-0"
-            >
-              <Link href={`/blog/${post.slug}`} className="group">
-                <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {post.title}
-                </h2>
-              </Link>
-              
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {post.description}
-              </p>
-              
-              <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                <span>{new Date(post.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</span>
-                <span>•</span>
-                <span>{post.readingTime} min read</span>
+    <div className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+      <div className="eyebrow" style={{ marginBottom: 24 }}>
+        <span>{t('eyebrow')}</span>
+        <span>{BLOG_POSTS.length} ENTRIES · UPDATED {fmtDate(sorted[0].date)}</span>
+      </div>
+      <h1 className="display" style={{ fontSize: 'clamp(56px, 11vw, 180px)' }}>
+        {t('title')}<span style={{ color: 'var(--accent)' }}>.</span>
+      </h1>
+      <p style={{ color: 'var(--ink-dim)', maxWidth: 640, fontSize: 18, lineHeight: 1.55, marginTop: 28 }}>
+        {t('desc')}
+      </p>
+
+      {/* Filter chips */}
+      <div style={{ marginTop: 48, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        {ALL_TAGS.map((tg) => (
+          <button key={tg} onClick={() => setTag(tg)} style={{
+            padding: '8px 14px',
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            letterSpacing: '0.08em',
+            border: '1px solid ' + (tag === tg ? 'var(--accent)' : 'var(--rule-bright)'),
+            background: tag === tg ? 'var(--accent)' : 'transparent',
+            color: tag === tg ? '#0e0e0c' : 'var(--ink-dim)',
+            cursor: 'pointer',
+            textTransform: 'uppercase',
+          }}>
+            {tg}
+          </button>
+        ))}
+        <span style={{ padding: '8px 14px', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>
+          {filtered.length} / {BLOG_POSTS.length} entries
+        </span>
+      </div>
+
+      {/* Featured post */}
+      {featured && (
+        <Link href={`/blog/${featured.slug}`} style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 40,
+          marginTop: 60,
+          padding: 32,
+          border: '1px solid var(--rule-bright)',
+          background: '#0d0d0b',
+        }} className="featured-post">
+          <div style={{ background: '#1a1916', border: '1px solid var(--rule)', overflow: 'hidden', aspectRatio: '4/3' }}>
+            <img src={featured.cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.15) contrast(1.05)' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 14 }}>
+                ★ FEATURED · §{featured.no} · {fmtDate(featured.date)} · {featured.reading}
               </div>
-              
-              <div className="flex flex-wrap gap-2 mt-4">
-                {post.tags.map((tag) => (
-                  <span 
-                    key={tag}
-                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs font-medium"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
+              <h2 style={{ fontSize: 38, fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.05 }}>
+                {featured.title}
+              </h2>
+              <p style={{ color: 'var(--ink-dim)', fontSize: 16, lineHeight: 1.55, margin: 0 }}>{featured.dek}</p>
+            </div>
+            <div style={{ marginTop: 20, display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+              {featured.tags.map((tg) => <span key={tg} className="tag">{tg}</span>)}
+              <span style={{ marginLeft: 'auto', fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--ink-dim)' }}>READ →</span>
+            </div>
+          </div>
+        </Link>
+      )}
+
+      {/* Post list */}
+      <div style={{ marginTop: 60, borderTop: '2px solid var(--ink)' }}>
+        {list.map((p) => (
+          <Link key={p.slug} href={`/blog/${p.slug}`} style={{
+            display: 'grid',
+            gridTemplateColumns: '80px 140px 1fr 2fr 120px 40px',
+            gap: 24,
+            padding: '28px 0',
+            borderBottom: '1px solid var(--rule)',
+            alignItems: 'center',
+          }} className="blog-row">
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>§ {p.no}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>{fmtDate(p.date)}</div>
+            <div>
+              <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.15 }}>{p.title}</div>
+              <div style={{ color: 'var(--ink-dim)', fontSize: 13, marginTop: 4 }}>{p.sub}</div>
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)', lineHeight: 1.55 }}>{p.dek}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {p.tags.slice(0, 3).map((tg) => <span key={tg} className="tag">{tg}</span>)}
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-faint)', width: '100%', marginTop: 4 }}>{p.reading}</span>
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 18, textAlign: 'right', color: 'var(--ink-dim)' }}>→</div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Subscribe strip */}
+      <div style={{ marginTop: 80, padding: 28, border: '1px solid var(--rule-bright)', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
+        <div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)', letterSpacing: '0.12em', marginBottom: 8 }}>[ SUBSCRIBE ]</div>
+          <div style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.015em', marginBottom: 6 }}>{t('subscribeTitle')}</div>
+          <div style={{ color: 'var(--ink-dim)', fontSize: 14 }}>{t('subscribeDesc')}</div>
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <a href="mailto:carlosfreund@gmail.com?subject=Subscribe" style={{ padding: '12px 20px', background: 'var(--accent)', color: '#0e0e0c', fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em', fontWeight: 700 }}>
+            EMAIL ME →
+          </a>
         </div>
       </div>
     </div>

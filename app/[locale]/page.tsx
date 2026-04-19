@@ -1,142 +1,175 @@
 'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { Terminal } from '@/components/Terminal';
+import { Ticker } from '@/components/Ticker';
+import { PROJECTS } from '@/lib/projects';
+
+function ProjectRow({ p }: { p: (typeof PROJECTS)[0] }) {
+  return (
+    <Link
+      href={`/work/${p.id}`}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '80px 1fr 200px 40px',
+        gap: 24,
+        padding: '28px 0',
+        borderBottom: '1px solid var(--rule)',
+        alignItems: 'center',
+        transition: 'background 0.15s',
+      }}
+      className="project-row"
+    >
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>
+        § {p.no}
+      </div>
+      <div>
+        <div style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em' }}>{p.title}</div>
+        <div style={{ color: 'var(--ink-dim)', fontSize: 13, marginTop: 4 }}>{p.sub}</div>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+        {p.stack.slice(0, 3).map((s) => (
+          <span key={s} className="tag">{s}</span>
+        ))}
+      </div>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 18, textAlign: 'right', color: 'var(--ink-dim)' }}>→</div>
+    </Link>
+  );
+}
 
 export default function Home() {
-  const t = useTranslations("Home");
-  
+  const t = useTranslations('Home');
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 sm:py-32 text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl sm:text-6xl font-bold font-mono mb-4">
-            {t('heroTitle')}
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 mb-6">
-            {t('heroSubtitle')}
-          </p>
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
-            {t('locationBadge')}
-          </div>
-          
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/work" 
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-            >
-              {t('ctaWork')}
-            </Link>
-            <a 
-              href="https://calendly.com/carlosfreund/30min" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="px-8 py-3 border border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 text-gray-900 dark:text-gray-100 font-medium rounded-lg transition-colors"
-            >
-              {t('ctaContact')}
-            </a>
-          </div>
-        </div>
-      </section>
-      
-      {/* Value Propositions */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                {t('valueProp1')}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {t('valueProp1Description')}
-              </p>
+    <div>
+      {/* Hero */}
+      <section className="page" style={{ paddingTop: 48 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 24 }}>
+              <span>PORTFOLIO 2026 / CARLOS FREUND</span>
             </div>
-            
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">🤖</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                {t('valueProp2')}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {t('valueProp2Description')}
-              </p>
-            </div>
-            
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">🌟</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                {t('valueProp3')}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {t('valueProp3Description')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Featured Projects Preview */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('featuredProjects')}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              {t('featuredProjectsSubtitle')}
+            <h1 style={{
+              fontFamily: 'var(--serif)',
+              fontStyle: 'italic',
+              fontWeight: 400,
+              fontSize: 'clamp(56px, 10vw, 160px)',
+              lineHeight: 0.92,
+              letterSpacing: '-0.02em',
+              margin: 0,
+            }}>
+              {t('heroLine1')} <span style={{ color: 'var(--accent)' }}>AI</span><br />
+              {t('heroLine2')} <u style={{ textDecorationThickness: 2, textUnderlineOffset: 14 }}>{t('heroLine3')}</u>
+            </h1>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 18, color: 'var(--ink-dim)', maxWidth: 480, marginTop: 32, lineHeight: 1.55 }}>
+              {t('heroDesc')}
             </p>
+            <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
+              <Link href="/work" className="btn btn-accent">{t('ctaWork')}</Link>
+              <Link href="/contact" className="btn">{t('ctaContact')}</Link>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/work/openhands" className="group cursor-pointer block">
-              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                <img src="/openhands-merge-commits.png" alt="OpenHands AI Agent" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                OpenHands AI Agent
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Python, Open Source</p>
+
+          {/* Photo collage */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'repeat(4, 110px)', gap: 8 }}>
+            <Link
+              href="/about"
+              title="About Carlos →"
+              style={{ gridColumn: '1 / 2', gridRow: '1 / 4', background: '#1a1916', overflow: 'hidden', border: '1px solid var(--rule-bright)', position: 'relative', display: 'block' }}
+            >
+              <img src="/assets/portrait-park.jpg" alt="Carlos" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', filter: 'grayscale(0.2) contrast(1.05)', display: 'block' }} />
             </Link>
-            
-            <Link href="/work/troy-comms" className="group cursor-pointer block">
-              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                <img src="/troy-email.png" alt="troy Comms System" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                troy Comms System
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Kotlin, Email, PDF</p>
+            <Link
+              href="/work/dpvcontrol"
+              style={{ gridColumn: '2 / 3', gridRow: '1 / 3', background: '#050504', overflow: 'hidden', border: '1px solid var(--rule-bright)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
+            >
+              <img src="/assets/dpv-top.jpg" alt="DPV" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </Link>
-            
-            <Link href="/work/dpvcontrol" className="group cursor-pointer block">
-              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                <img src="/dpvtop2.jpg" alt="DPVControl Firmware" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                DPVControl Firmware
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">C++, ESP32, Embedded</p>
+            <Link
+              href="/work/food-algorithm"
+              style={{ gridColumn: '2 / 3', gridRow: '3 / 4', background: '#1a1916', overflow: 'hidden', border: '1px solid var(--rule-bright)', position: 'relative', display: 'block' }}
+            >
+              <img src="/assets/katana-pitch.png" alt="Pitching on a whiteboard" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </Link>
-            
-            <Link href="/work/ai-shell-loop" className="group cursor-pointer block">
-              <div className="h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                <img src="/ai-shell-loop.png" alt="ai-shell-loop" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                ai-shell-loop
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Python, AI Agent</p>
-            </Link>
+            <div style={{ gridColumn: '1 / 3', gridRow: '4 / 5', background: '#050504', border: '1px solid var(--rule-bright)', padding: 20, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)', lineHeight: 1.7 }}>
+              <div style={{ color: 'var(--ink-faint)', fontSize: 10, letterSpacing: '0.1em', marginBottom: 8 }}>[ CAPTION ]</div>
+              {t('photoCaption')}
+            </div>
           </div>
         </div>
       </section>
+
+      <div style={{ height: 120 }} />
+      <Ticker />
+      <div style={{ height: 120 }} />
+
+      {/* Manifesto */}
+      <section className="page" style={{ maxWidth: 1100 }}>
+        <div className="section-num" style={{ marginBottom: 40 }}>{t('manifestoLabel')}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, borderTop: '1px solid var(--ink)' }}>
+          {([
+            { n: '01', tk: 'manifesto1Title', bk: 'manifesto1Body' },
+            { n: '02', tk: 'manifesto2Title', bk: 'manifesto2Body' },
+            { n: '03', tk: 'manifesto3Title', bk: 'manifesto3Body' },
+          ] as const).map((m, i) => (
+            <div key={i} style={{
+              padding: '32px 28px 32px 0',
+              borderRight: i < 2 ? '1px solid var(--rule)' : 'none',
+              paddingLeft: i > 0 ? 28 : 0,
+            }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 16 }}>↳ {m.n}</div>
+              <h3 style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 32, fontWeight: 400, letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.1 }}>
+                {t(m.tk)}
+              </h3>
+              <p style={{ color: 'var(--ink-dim)', fontSize: 14, margin: 0, lineHeight: 1.6 }}>{t(m.bk)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div style={{ height: 140 }} />
+
+      {/* Terminal callout */}
+      <section className="page">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 40, alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="section-num" style={{ marginBottom: 12 }}>{t('terminalLabel')}</div>
+            <h2 style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 72, fontWeight: 400, margin: '0 0 16px', lineHeight: 1 }}>
+              {t('terminalTitle')}<br />
+              <span style={{ color: 'var(--accent)' }}>{t('terminalTitleAccent')}</span>
+            </h2>
+            <p style={{ color: 'var(--ink-dim)', maxWidth: 420, margin: '0 0 20px', fontSize: 16 }}>
+              <span style={{ fontFamily: 'var(--mono)', color: 'var(--ink)' }}>ai-shell-loop</span> — {t('terminalDesc')}
+            </p>
+            <div>
+              <Link href="/work/ai-shell-loop" className="btn">{t('terminalCta')}</Link>
+            </div>
+          </div>
+          <div style={{ height: 480 }}>
+            <Terminal />
+          </div>
+        </div>
+      </section>
+
+      <div style={{ height: 140 }} />
+
+      {/* Selected work */}
+      <section className="page">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 20 }}>
+          <h2 style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 80, margin: 0, fontWeight: 400, letterSpacing: '-0.02em' }}>
+            {t('selectedWork')}
+          </h2>
+          <Link href="/work" className="btn">{t('allProjects')}</Link>
+        </div>
+        <div style={{ borderTop: '1px solid var(--ink)' }}>
+          {PROJECTS.filter((p) => p.featured).map((p) => (
+            <ProjectRow key={p.id} p={p} />
+          ))}
+        </div>
+      </section>
+
+      <div style={{ height: 80 }} />
     </div>
   );
 }

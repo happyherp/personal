@@ -4,9 +4,10 @@ export class I18nHelper {
   constructor(private page: Page) {}
 
   async switchLanguage(targetLang: string) {
-    const select = this.page.locator('select');
-    await select.selectOption(targetLang);
-    // Wait for navigation to complete
+    await this.page
+      .locator('[data-testid="main-nav"]')
+      .getByRole('button', { name: targetLang.toUpperCase(), exact: true })
+      .click();
     await this.page.waitForURL(url => {
       const urlStr = url.toString();
       if (targetLang === 'en') {

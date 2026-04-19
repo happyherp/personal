@@ -1,35 +1,42 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { JetBrains_Mono, Instrument_Serif, Space_Grotesk } from 'next/font/google';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const jetbrainsMono = JetBrains_Mono({
+  weight: ['400', '500', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const instrumentSerif = Instrument_Serif({
+  weight: ['400'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-instrument-serif',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Carlos Freund — Senior Backend & AI Engineer",
-  description: "Senior Backend Engineer specializing in Java, Kotlin, and AI integration. 15 years of production experience. Based in Belize, UTC-6.",
+  title: 'Carlos Freund — Backend Engineer',
+  description:
+    'Senior backend engineer shipping AI into production. 15 years of Java + Kotlin. Open-source contributor to OpenHands and litellm. Freelancing from Belize, UTC-6.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${jetbrainsMono.variable} ${instrumentSerif.variable} ${spaceGrotesk.variable}`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

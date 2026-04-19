@@ -1,48 +1,121 @@
 'use client';
 
-import { useState } from 'react';
-import { useTranslations } from "next-intl";
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
-const CalendlyEmbed = ({ t }: { t: any }) => {
+interface FormData {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+}
+
+function Field({
+  label,
+  id,
+  type = 'text',
+  area,
+  value,
+  onChange,
+  required,
+}: {
+  label: string;
+  id: string;
+  type?: string;
+  area?: boolean;
+  value: string;
+  onChange: (v: string) => void;
+  required?: boolean;
+}) {
+  const [focus, setFocus] = useState(false);
+  const style = {
+    background: 'transparent',
+    border: 'none',
+    color: 'var(--ink)',
+    fontFamily: 'var(--sans)',
+    fontSize: 18,
+    outline: 'none',
+    resize: 'vertical' as const,
+    padding: 0,
+    width: '100%',
+  };
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h3 className="text-lg font-semibold mb-4">{t('scheduleCall')}</h3>
-      <div className="h-96 bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
-        <a 
-          href="https://calendly.com/carlosfreund/30min"
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors inline-flex items-center"
-        >
-          {t('openCalendly')}
-        </a>
-      </div>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 text-center">
-        {t('calendlyDescription')}
-      </p>
+    <label
+      htmlFor={id}
+      style={{ display: 'grid', gap: 6, padding: '16px 0', borderBottom: '1px solid ' + (focus ? 'var(--ink)' : 'var(--rule)'), cursor: 'text' }}
+    >
+      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: focus ? 'var(--accent)' : 'var(--ink-faint)', letterSpacing: '0.1em' }}>
+        [ {label} ]
+      </span>
+      {area ? (
+        <textarea
+          id={id}
+          rows={5}
+          required={required}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={style}
+        />
+      ) : (
+        <input
+          id={id}
+          type={type}
+          required={required}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={style}
+        />
+      )}
+    </label>
+  );
+}
+
+function DirectLine({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 10, padding: '4px 0', borderBottom: last ? 'none' : '1px dashed var(--rule)' }}>
+      <span style={{ color: 'var(--ink-faint)', fontSize: 11, fontFamily: 'var(--mono)' }}>{label}</span>
+      <span>{children}</span>
     </div>
   );
-};
+}
 
 export default function Contact() {
-  const t = useTranslations("Contact");
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  
+  const t = useTranslations('Contact');
+  const [form, setForm] = useState<FormData>({ name: '', email: '', company: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'America/Belize',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        weekday: 'short',
+      }).format(new Date()));
+    };
+    tick();
+    const id = setInterval(tick, 30000);
+    return () => clearInterval(id);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('idle');
-    
+    setStatus('sending');
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
-      
       if (res.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
+        setStatus('sent');
+        setForm({ name: '', email: '', company: '', message: '' });
       } else {
         setStatus('error');
       }
@@ -50,153 +123,68 @@ export default function Contact() {
       setStatus('error');
     }
   };
-  
-  const currentTime = new Date().toLocaleTimeString('en-US', {
-    timeZone: 'America/Belize',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
+
+  const sent = status === 'sent';
+
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold font-mono mb-4">{t('title')}</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            {t('intro')}
-          </p>
-        </header>
-        
-        {/* Timezone Info */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-12">
-          <p className="text-center text-blue-900 dark:text-blue-200">
-            {t('timezoneText', { time: currentTime })}
-          </p>
-          <p className="text-center text-sm text-blue-700 dark:text-blue-300 mt-2">
-            {t('availabilityStatus')}
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">{t('sendMessage')}</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('formName')}
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('formEmail')}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('formMessage')}
-                </label>
-                <textarea
-                  id="message"
-                  required
-                  rows={6}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  placeholder={t('formPlaceholder')}
-                />
-              </div>
-              
-              <button
-                type="submit"
-                className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-              >
-                {t('formSubmit')}
-              </button>
-              
-              {status === 'success' && (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-4 py-3 rounded-lg">
-                  {t('formSuccess')}
-                </div>
-              )}
-              
-              {status === 'error' && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 px-4 py-3 rounded-lg">
-                  {t('formError')}
-                </div>
-              )}
-            </form>
+    <div className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+      <div className="eyebrow" style={{ marginBottom: 24 }}>
+        <span>{t('eyebrow')}</span>
+      </div>
+      <h1 className="display" style={{ fontSize: 'clamp(56px, 11vw, 180px)' }}>
+        {t('title')}<span style={{ color: 'var(--accent)' }}>.</span>
+      </h1>
+      <p style={{ color: 'var(--ink-dim)', fontSize: 20, maxWidth: 720, marginTop: 24, lineHeight: 1.55 }}>
+        {t('intro')}
+      </p>
+
+      <div style={{ marginTop: 64, display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 48, alignItems: 'start' }}>
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="section-num" style={{ marginBottom: 16 }}>{t('sectionForm')}</div>
+          <Field label={t('labelName')} id="name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
+          <Field label={t('labelEmail')} id="email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} required />
+          <Field label={t('labelCompany')} id="company" value={form.company} onChange={(v) => setForm({ ...form, company: v })} />
+          <Field label={t('labelMessage')} id="message" area value={form.message} onChange={(v) => setForm({ ...form, message: v })} required />
+          <div style={{ marginTop: 24, display: 'flex', gap: 14, alignItems: 'center' }}>
+            <button type="submit" className="btn btn-accent" disabled={sent || status === 'sending'}>
+              {sent ? '✓ ' + t('sent') : t('submit')}
+            </button>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>
+              {sent ? t('replyTimeSent') : t('replyTime')}
+            </span>
           </div>
-          
-          {/* Calendly Embed */}
-          <div>
-            <CalendlyEmbed t={t} />
+          {status === 'error' && (
+            <div style={{ marginTop: 16, fontFamily: 'var(--mono)', fontSize: 12, color: '#ff6b6b' }}>{t('error')}</div>
+          )}
+        </form>
+
+        {/* Direct contact + clock */}
+        <div>
+          <div className="section-num" style={{ marginBottom: 16 }}>{t('sectionDirect')}</div>
+          <div style={{ border: '1px solid var(--rule-bright)', padding: 24, fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>
+            <DirectLine label="EMAIL">
+              <a href="mailto:carlosfreund@gmail.com" style={{ color: 'var(--accent)' }}>carlosfreund@gmail.com</a>
+            </DirectLine>
+            <DirectLine label="30 MIN CALL">
+              <a href="https://calendly.com/carlosfreund/30min" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>calendly /30min ↗</a>
+            </DirectLine>
+            <DirectLine label="1 HOUR CALL">
+              <a href="https://calendly.com/carlosfreund/1-hour-meeting" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>calendly /1-hour ↗</a>
+            </DirectLine>
+            <DirectLine label="GITHUB">
+              <a href="https://github.com/happyherp" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>happyherp ↗</a>
+            </DirectLine>
+            <DirectLine label="LINKEDIN" last>
+              <a href="https://linkedin.com/in/carlos-freund-93630582" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>carlos-freund ↗</a>
+            </DirectLine>
           </div>
-        </div>
-        
-        {/* Contact Links */}
-        <div className="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
-          <h3 className="text-2xl font-bold mb-6 text-center">{t('directLinks')}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a 
-              href="mailto:carlosfreund@gmail.com"
-              className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-400 transition-colors"
-            >
-              <span className="text-3xl mb-2">📧</span>
-              <span className="font-medium">Email</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">carlosfreund@gmail.com</span>
-            </a>
-            
-            <a 
-              href="https://github.com/happyherp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-400 transition-colors"
-            >
-              <span className="text-3xl mb-2">🐙</span>
-              <span className="font-medium">GitHub</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">@happyherp</span>
-            </a>
-            
-            <a 
-              href="https://linkedin.com/in/carlos-freund-93630582"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-400 transition-colors"
-            >
-              <span className="text-3xl mb-2">💼</span>
-              <span className="font-medium">LinkedIn</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">Profile</span>
-            </a>
-            
-            <a 
-              href="https://www.upwork.com/freelancers/~017414ed3a00e19ec0"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-400 transition-colors"
-            >
-              <span className="text-3xl mb-2">💻</span>
-              <span className="font-medium">Upwork</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">Freelance Profile</span>
-            </a>
+
+          <div style={{ marginTop: 24, border: '1px solid var(--rule-bright)', padding: 24, fontFamily: 'var(--mono)', fontSize: 12 }}>
+            <div style={{ color: 'var(--ink-faint)', fontSize: 10, letterSpacing: '0.1em', marginBottom: 12 }}>[ WHERE I AM ]</div>
+            {time && <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em' }}>{time}</div>}
+            <div style={{ color: 'var(--ink-dim)', marginTop: 4 }}>Duck Run 2, Cayo District, Belize · UTC−6</div>
+            <div style={{ marginTop: 14, color: 'var(--accent)' }}>● {t('available')}</div>
           </div>
         </div>
       </div>

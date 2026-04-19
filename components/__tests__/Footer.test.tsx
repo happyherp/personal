@@ -5,14 +5,19 @@ jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-describe('Footer', () => {
-  const renderFooter = () => {
-    return render(<Footer />);
-  };
+jest.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, ...props }: { href: string; children: React.ReactNode; [key: string]: unknown }) =>
+    <a href={href} {...props}>{children}</a>,
+}));
 
-  it('renders footer with copyright', () => {
-    renderFooter();
-    const currentYear = new Date().getFullYear();
-    expect(screen.getByText(`© ${currentYear} Carlos Freund`)).toBeInTheDocument();
+describe('Footer', () => {
+  it('renders footer with site name', () => {
+    render(<Footer />);
+    expect(screen.getByText('Carlos Freund')).toBeInTheDocument();
+  });
+
+  it('renders contact email', () => {
+    render(<Footer />);
+    expect(screen.getByText('carlosfreund@gmail.com')).toBeInTheDocument();
   });
 });

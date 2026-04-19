@@ -1,124 +1,93 @@
 'use client';
 
-import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { PROJECTS } from '@/lib/projects';
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  thumbnail: string;
-  color: string;
-}
-
-const projects: Project[] = [
-  {
-    id: "openhands",
-    title: "Open Source Contributor: OpenHands AI Agent & litellm",
-    description: "12 merged pull requests in OpenHands (70k+ stars), the leading open-source AI coding agent. Contributions span Docker containers, runtime stability, frontend UX, build tooling, and LLM metrics. Also contributed token-counter rewrite to litellm (42k+ stars).",
-    tags: ["Python", "AI", "Open Source", "Docker", "Automated Testing"],
-    thumbnail: "/openhands-merge-commits.png",
-    color: "from-blue-500 to-purple-600"
-  },
-  {
-    id: "troy-comms",
-    title: "Omni-Channel Customer Communication System — troy GmbH",
-    description: "Built the complete outgoing communication system used across troy's client portfolio. Generated pixel-perfect PDFs from Google Docs templates, responsive HTML emails with CSS media queries, and integrated SMS notifications—all handed off to print & mail fulfillment partners.",
-    tags: ["Kotlin", "Email", "PDF", "SMS", "Print Fulfillment"],
-    thumbnail: "/troy-email.png",
-    color: "from-green-500 to-blue-600"
-  },
-  {
-    id: "dpvcontrol",
-    title: "ESP32 Firmware for DIY Dive Propulsion Vehicle (DPVControl)",
-    description: "Wrote the initial firmware for a DIY underwater propulsion vehicle. Features motor control, Reed switch input, cruise control, boost mode, battery monitoring, leak detection, and safety codes. The project has grown to 20+ releases with a full REST API and web GUI.",
-    tags: ["C++", "Embedded", "ESP32", "PlatformIO", "VESC"],
-    thumbnail: "/dpvtop2.jpg",
-    color: "from-orange-500 to-red-600"
-  },
-  {
-    id: "ai-shell-loop",
-    title: "ai-shell-loop: AI Agent that Generates & Executes Shell Commands",
-    description: "Built in September 2024 — two months before Claude Code launched. Lets you describe goals in plain English; the tool calls GPT to generate bash commands, executes them, observes results, and iterates until the goal is reached. Published on PyPI with proper packaging.",
-    tags: ["Python", "AI Agent", "OpenAI API", "CLI", "PyPI"],
-    thumbnail: "/ai-shell-loop.png",
-    color: "from-purple-500 to-pink-600"
-  },
-  {
-    id: "llm-security",
-    title: "Responsible Disclosure: LLM Chatbot Data Breach (Medical Sector)",
-    description: "Discovered a critical data privacy vulnerability in an AI-powered customer support chatbot at a regulated medical e-commerce company. The LLM had unrestricted database access exposing customer data. Reported to the company and escalated to Bavarian Data Protection Authority when not properly fixed.",
-    tags: ["Security", "AI Security", "Prompt Injection", "GDPR", "Ethical Hacking"],
-    thumbnail: "🔒",
-    color: "from-red-500 to-orange-600"
-  },
-  {
-    id: "food-algorithm",
-    title: "Simplex Nutrition Optimizer — Solo-Founded Web App",
-    description: "Built and launched food-algorithm.de as a solo founder. Applied the Simplex linear programming algorithm to find the cheapest possible diet meeting all nutritional requirements. The system computes personalized targets across 30+ constraints and finds minimum-cost food combinations.",
-    tags: ["Java", "Algorithms", "Angular", "PostgreSQL", "Optimization"],
-    thumbnail: "/food-algorith1.png",
-    color: "from-teal-500 to-green-600"
-  },
-  {
-    id: "shoqu",
-    title: "Shoqu — Influencer-Marketer Matching Platform (Co-Founder)",
-    description: "Co-founded a platform connecting social media influencers with marketers for sponsored content deals. Built Instagram API integration allowing influencers to pull posts into their profiles. Featured dual user roles, separate dashboards, booking flow, and analytics.",
-    tags: ["Product Development", "Bubble.io", "Startup", "Instagram API"],
-    thumbnail: "/shoqu1.png",
-    color: "from-pink-500 to-rose-600"
-  }
-];
+const TAG_MAP: Record<string, string[]> = {
+  AI: ['AI', 'Python', 'OpenAI', 'MCP', 'Embeddings'],
+  BACKEND: ['Kotlin', 'Java', 'Spring', 'Hibernate', 'AWS Redshift'],
+  OSS: ['OSS', 'Haskell', 'Hackage'],
+  EMBEDDED: ['C++', 'ESP32', 'Embedded'],
+  SECURITY: ['Security', 'GDPR', 'Prompt Injection'],
+  STARTUP: ['Angular', 'Algorithms'],
+};
+const FILTERS = ['ALL', ...Object.keys(TAG_MAP)] as const;
 
 export default function Work() {
-  const t = useTranslations("Work");
-  
+  const t = useTranslations('Work');
+  const [filter, setFilter] = useState<string>('ALL');
+
+  const visible = PROJECTS.filter(
+    (p) => filter === 'ALL' || p.stack.some((s) => TAG_MAP[filter]?.includes(s))
+  );
+
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold font-mono mb-4">{t('title')}</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 mb-12">
-          A collection of projects spanning backend systems, AI integration, embedded firmware, and security research.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project) => (
-            <Link 
-              key={project.id} 
-              href={`/work/${project.id}`}
-              className="group block"
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
-                <div className={`h-48 bg-gradient-to-br ${project.color} flex items-center justify-center overflow-hidden`}>
-                  {project.thumbnail.startsWith('/') ? (
-                    <img src={project.thumbnail} alt={project.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-white text-5xl">{project.thumbnail}</span>
-                  )}
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span 
-                        key={tag} 
-                        className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+    <div className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+      <div className="eyebrow" style={{ marginBottom: 24 }}>
+        <span>{t('eyebrow')}</span>
+      </div>
+      <h1 className="display" style={{ fontSize: 'clamp(56px, 11vw, 180px)' }}>
+        {t('title')}<span style={{ color: 'var(--accent)' }}>.</span>
+      </h1>
+      <p style={{ color: 'var(--ink-dim)', maxWidth: 640, fontSize: 18, lineHeight: 1.55, marginTop: 28 }}>
+        {t('desc')}
+      </p>
+
+      <div style={{ marginTop: 48, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            style={{
+              padding: '8px 14px',
+              fontFamily: 'var(--mono)',
+              fontSize: 11,
+              letterSpacing: '0.08em',
+              border: '1px solid ' + (filter === f ? 'var(--accent)' : 'var(--rule-bright)'),
+              background: filter === f ? 'var(--accent)' : 'transparent',
+              color: filter === f ? '#0e0e0c' : 'var(--ink-dim)',
+              cursor: 'pointer',
+            }}
+          >
+            {f}
+          </button>
+        ))}
+        <span style={{ padding: '8px 14px', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>
+          {visible.length} / {PROJECTS.length} entries
+        </span>
+      </div>
+
+      <div style={{ marginTop: 40, borderTop: '2px solid var(--ink)' }}>
+        {visible.map((p) => (
+          <Link
+            key={p.id}
+            href={`/work/${p.id}`}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '80px 120px 1fr 1.5fr 120px 40px',
+              gap: 24,
+              padding: '28px 0',
+              borderBottom: '1px solid var(--rule)',
+              alignItems: 'center',
+              transition: 'background 0.15s',
+            }}
+            className="work-row"
+          >
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>§ {p.no}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-faint)' }}>{p.year}</div>
+            <div>
+              <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em' }}>{p.title}</div>
+              <div style={{ color: 'var(--ink-dim)', fontSize: 13, marginTop: 4 }}>{p.sub}</div>
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)' }}>{p.summary}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {p.stack.slice(0, 3).map((s) => <span key={s} className="tag">{s}</span>)}
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 18, textAlign: 'right', color: 'var(--ink-dim)' }}>→</div>
+          </Link>
+        ))}
       </div>
     </div>
   );

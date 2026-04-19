@@ -1,193 +1,167 @@
 'use client';
 
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
+
+function InfoBlock({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return (
+    <div style={{ marginBottom: last ? 0 : 24, paddingBottom: last ? 0 : 24, borderBottom: last ? 'none' : '1px dashed var(--rule)' }}>
+      <div style={{ color: 'var(--ink-faint)', letterSpacing: '0.1em', fontSize: 10, marginBottom: 8 }}>[ {label} ]</div>
+      <div style={{ color: 'var(--ink)' }}>{children}</div>
+    </div>
+  );
+}
+
+function SkillGroup({ label, color = 'var(--ink-dim)', items, last }: { label: string; color?: string; items: string[]; last?: boolean }) {
+  return (
+    <div style={{ marginBottom: last ? 0 : 20 }}>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color, letterSpacing: '0.1em', marginBottom: 10 }}>{label}</div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        {items.map((i) => <span key={i} className="tag" style={{ fontSize: 12, padding: '5px 11px' }}>{i}</span>)}
+      </div>
+    </div>
+  );
+}
+
+function TimelineRow({ y, r, c, d, last }: { y: string; r: string; c: string; d: string; last?: boolean }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 24, padding: '20px 0', borderBottom: last ? 'none' : '1px solid var(--rule)' }}>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--accent)' }}>{y}</div>
+      <div>
+        <div style={{ fontSize: 17, fontWeight: 600 }}>{r}</div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-dim)', marginTop: 2 }}>{c}</div>
+        <div style={{ color: 'var(--ink-dim)', fontSize: 14, marginTop: 8, lineHeight: 1.6 }}>{d}</div>
+      </div>
+    </div>
+  );
+}
+
+function PhotoCard({ src, cap }: { src: string; cap: string }) {
+  return (
+    <div style={{ border: '1px solid var(--rule-bright)' }}>
+      <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#1a1916' }}>
+        <img src={src} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
+      </div>
+      <div style={{ padding: 12, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-dim)', lineHeight: 1.6, borderTop: '1px solid var(--rule-bright)' }}>
+        {cap}
+      </div>
+    </div>
+  );
+}
 
 export default function About() {
-  const t = useTranslations("About");
-  
+  const t = useTranslations('About');
+
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold font-mono mb-8">{t('title')}</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Profile Image */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              <div className="relative w-64 h-64 mx-auto lg:mx-0 mb-6">
-                <Image
-                  src="/Portraet_CarlosFreund_lowres.jpg"
-                  alt="Carlos Freund"
-                  fill
-                  className="rounded-lg object-cover shadow-lg"
-                />
-              </div>
-              
-              {/* Key Facts Sidebar */}
-              <div className="space-y-4 text-sm">
-                <div>
-                  <h3 className="font-semibold text-gray-500 dark:text-gray-400">{t('timezone')}</h3>
-                  <p>UTC-6 (Belize)</p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-500 dark:text-gray-400">{t('availability')}</h3>
-                  <p>Available now</p>
-                  <p className="text-gray-600 dark:text-gray-400">More than 30 hrs/week</p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-500 dark:text-gray-400">{t('languages')}</h3>
-                  <p>English (Fluent)</p>
-                  <p>German (Native)</p>
-                  <p>Spanish (Native)</p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-500 dark:text-gray-400">Links</h3>
-                  <p><a href="https://github.com/happyherp" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a></p>
-                  <p><a href="https://linkedin.com/in/carlos-freund-93630582" className="text-blue-600 dark:text-blue-400 hover:underline">LinkedIn</a></p>
-                  <p><a href="https://www.upwork.com/freelancers/~017414ed3a00e19ec0" className="text-blue-600 dark:text-blue-400 hover:underline">Upwork</a></p>
-                </div>
-              </div>
-            </div>
+    <div className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+      <div className="eyebrow" style={{ marginBottom: 24 }}>
+        <span>{t('eyebrow')}</span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 60, alignItems: 'start' }}>
+        <div>
+          <h1 className="display" style={{ fontSize: 'clamp(56px, 10vw, 160px)', marginBottom: 0 }}>
+            {t('greeting')}<br />Carlos<span style={{ color: 'var(--accent)' }}>.</span>
+          </h1>
+        </div>
+        <div style={{ border: '1px solid var(--rule-bright)', overflow: 'hidden', aspectRatio: '3/4' }}>
+          <img src="/assets/portrait-caterpillar.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Carlos" />
+        </div>
+      </div>
+
+      <div style={{ marginTop: 80, display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 60 }}>
+        {/* Sticky sidebar */}
+        <div style={{ position: 'sticky', top: 100, alignSelf: 'start', fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.8 }}>
+          <InfoBlock label={t('labelLocation')}>
+            Duck Run 2, Cayo District<br />
+            Belize 🇧🇿<br />
+            UTC−6 / CST
+          </InfoBlock>
+          <InfoBlock label={t('labelAvailability')}>
+            <span style={{ color: 'var(--accent)' }}>●</span> {t('availableNow')}<br />
+            30+ hrs/week<br />
+            {t('prefersUS')}
+          </InfoBlock>
+          <InfoBlock label={t('labelLanguages')}>
+            English (fluent)<br />
+            German (native)<br />
+            Spanish (native)
+          </InfoBlock>
+          <InfoBlock label="LINKS" last>
+            <a href="https://github.com/happyherp" style={{ color: 'var(--accent)', display: 'block' }}>github.com/happyherp ↗</a>
+            <a href="https://linkedin.com/in/carlos-freund-93630582" style={{ color: 'var(--accent)', display: 'block' }}>linkedin ↗</a>
+            <a href="https://www.upwork.com/freelancers/~017414ed3a00e19ec0" style={{ color: 'var(--accent)', display: 'block' }}>upwork ↗</a>
+          </InfoBlock>
+        </div>
+
+        {/* Main content */}
+        <div>
+          <div className="section-num" style={{ marginBottom: 8 }}>§ 01 / {t('sectionNarrative')}</div>
+          <h2 style={{ fontFamily: 'var(--mono)', fontSize: 32, fontWeight: 700, margin: '0 0 20px', letterSpacing: '-0.02em' }}>{t('narrativeTitle')}</h2>
+          <div style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--ink)', maxWidth: 640 }}>
+            <p>
+              I'm a senior backend engineer, 15+ years in. I started as a Fachinformatiker
+              apprentice at Neusta in Bremen, studied computer science at FH Wedel
+              (GPA 1.7, two competitive-programming awards), then spent a decade writing
+              Java and Kotlin across banking, EV research, e-commerce, and debt-collection
+              tech — with a solo-founded nutrition-optimizer startup in the middle.
+            </p>
+            <p>
+              In 2022 I joined KPS Software as the team's AI-workflow pioneer: evaluating
+              and integrating AI coding tools into our SDLC while shipping the Java backend.
+              That led me to OpenHands and litellm, where I'm now a regular contributor —
+              including a complete rewrite of litellm's token-counter module (PR #10409, merged).
+            </p>
+            <p>
+              Then in 2025 I left the €80k job, moved to Belize, and started freelancing.
+              I wanted the freedom to work on problems that actually matter and to
+              <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)' }}> live a life I designed. </em>
+              It's been the best decision I've made.
+            </p>
+            <p>
+              Outside of paid work I maintain ESP32 firmware for an open-source dive
+              scooter, built an MCP server for semantic Bible search in a day, published
+              a Haskell library (lazyset) on Hackage, and solved 50+ Project Euler problems.
+            </p>
           </div>
-          
-          {/* Bio and Narrative */}
-          <div className="lg:col-span-2 space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">The Journey</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="mb-4">
-                  I'm Carlos Freund, a Senior Backend Engineer with 15 years of experience building production software. 
-                  My journey began with a software development apprenticeship in Germany, where I learned the fundamentals 
-                  of building robust, maintainable systems.
-                </p>
-                
-                <p className="mb-4">
-                  After years of working in corporate environments and even founding my own startup 
-                  (food-algorithm.de - a nutrition optimization web app), I made a deliberate choice to 
-                  step away from the traditional career path. I left a €80k job to freelance from Belize, 
-                  seeking the freedom to work on problems that truly matter while living life on my own terms.
-                </p>
-                
-                <p className="mb-4">
-                  Today, I help companies integrate AI into real backend systems — not as pilots or prototypes, 
-                  but as production reality. At KPS, I was the first engineer to formally push for AI adoption, 
-                  building the internal case, presenting the roadmap, and delivering on the promise. I built MCP 
-                  servers for LLM tool integration and work daily with agents, embeddings, and Python AI tooling 
-                  — on top of my 15-year Java/Spring backend foundation.
-                </p>
-                
-                <p className="mb-4">
-                  What sets me apart is that I'm not just a consumer of AI tools — I'm a contributor. I have 
-                  multiple merged pull requests in OpenHands (the leading open-source AI coding agent with 70k+ stars), 
-                  including core work on context-window management and LLM cost optimization. I also contributed 
-                  a critical token-counter fix to litellm, the universal LLM gateway library used across the industry.
-                </p>
-                
-                <p>
-                  I ship autonomously without hand-holding. Whether it's building a complete communication system 
-                  for troy GmbH (handling email, PDF letters, SMS, and print fulfillment), writing firmware for 
-                  an underwater dive propulsion vehicle, or revealing critical security vulnerabilities in AI systems, 
-                  I take ownership and deliver results.
-                </p>
-              </div>
-            </div>
-            
-            {/* Technical Skills */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6">{t('techStackTitle')}</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-green-600 dark:text-green-400">Expert</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Java', 'Kotlin', 'SQL', 'Hibernate', 'JavaScript', 'Haskell'].map(skill => (
-                      <span key={skill} className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full text-sm">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-400">Proficient</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Spring', 'Maven', 'Docker', 'AWS', 'Python', 'Angular', 'TypeScript', 'ElasticSearch'].map(skill => (
-                      <span key={skill} className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-purple-600 dark:text-purple-400">AI / Agentic</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['OpenHands', 'LiteLLM', 'MCP', 'vibe coding'].map(skill => (
-                      <span key={skill} className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full text-sm">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-orange-600 dark:text-orange-400">Embedded</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['C++', 'ESP32'].map(skill => (
-                      <span key={skill} className="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 rounded-full text-sm">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Professional Timeline */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Professional Experience</h2>
-              <div className="space-y-6">
-                <div className="border-l-4 border-blue-500 pl-6">
-                  <h3 className="text-lg font-semibold">Senior Java & AI Integration Engineer</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">KPS Software GmbH | May 2022 – Feb 2025</p>
-                  <p className="text-sm">
-                    Java backend development and API design for iOS integration. Pioneered AI-assisted 
-                    development workflows and built comprehensive automated test suites.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-green-500 pl-6">
-                  <h3 className="text-lg font-semibold">Lead Backend Developer & SCRUM Master</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">troy GmbH | 2018 – 2022</p>
-                  <p className="text-sm">
-                    Owned four revenue-critical backend processes. Primary developer for Kotlin/Spring backend, 
-                    built AWS Redshift data warehouse, and mentored junior developers.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-purple-500 pl-6">
-                  <h3 className="text-lg font-semibold">Java Consultant (Freelance)</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">FINCON | 2017 – 2018</p>
-                  <p className="text-sm">
-                    €80/h freelance consultant customizing banking software. Performance optimization, 
-                    frontend development, and test-driven development.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-orange-500 pl-6">
-                  <h3 className="text-lg font-semibold">Founder & Developer</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">food-algorithm.de | 2016 – 2017</p>
-                  <p className="text-sm">
-                    Solo founder building a nutrition optimization web app. Implemented Simplex algorithm 
-                    for diet optimization and launched the complete product.
-                  </p>
-                </div>
-              </div>
-            </div>
+
+          <div style={{ height: 80 }} />
+
+          <div className="section-num" style={{ marginBottom: 8 }}>§ 02 / {t('sectionStack')}</div>
+          <h2 style={{ fontFamily: 'var(--mono)', fontSize: 32, fontWeight: 700, margin: '0 0 24px', letterSpacing: '-0.02em' }}>{t('stackTitle')}</h2>
+          <SkillGroup label={t('skillExpert')} color="var(--accent)" items={['Java SE/EE', 'Kotlin', 'SQL', 'Hibernate', 'JavaScript']} />
+          <SkillGroup label={t('skillProficient')} items={['Python', 'Spring', 'Maven', 'Docker', 'AWS Redshift', 'Angular', 'TypeScript', 'ElasticSearch', 'Git', 'Linux', 'TestNG/JUnit', 'REST/SOAP', 'Haskell']} />
+          <SkillGroup label={t('skillAI')} color="var(--accent)" items={['OpenHands', 'LiteLLM', 'MCP', 'Claude / GPT', 'Embeddings', 'Vibe coding', 'AI-augmented SDLC']} />
+          <SkillGroup label={t('skillEmbedded')} items={['C++', 'ESP32', 'PlatformIO', 'VESC', 'NeoPixel']} />
+          <SkillGroup label={t('skillFamiliar')} items={['C', 'C#', 'Bash', 'Django', 'Gradle', 'jQuery']} last />
+
+          <div style={{ height: 80 }} />
+
+          <div className="section-num" style={{ marginBottom: 8 }}>§ 03 / {t('sectionTimeline')}</div>
+          <h2 style={{ fontFamily: 'var(--mono)', fontSize: 32, fontWeight: 700, margin: '0 0 24px', letterSpacing: '-0.02em' }}>{t('timelineTitle')}</h2>
+          <div style={{ borderTop: '1px solid var(--ink)' }}>
+            <TimelineRow y="2025—" r="Senior Backend / AI Freelancer" c="Independent · Belize" d="AI integration into production backend systems. MCP servers, LLM gateways, agents. Available for remote contracts with US clients." />
+            <TimelineRow y="2022–2025" r="Software Engineer" c="KPS Software GmbH · Bremen (remote)" d="Java backend + API design for iOS. Pioneered AI-assisted development workflows; evaluated and integrated AI coding tools into the SDLC." />
+            <TimelineRow y="2018–2022" r="Lead Backend Developer & SCRUM Master" c="troy GmbH · Bremen" d="Sole owner of four revenue-critical backend processes. Kotlin/Spring/Hibernate. Built AWS Redshift data warehouse, administered Looker, mentored juniors." />
+            <TimelineRow y="2017–2018" r="Java Consultant (Freelance, €80/h)" c="FINCON Unternehmensberatung GmbH" d="Customized banking software: Java 8, Hibernate, JPA2, Spring, DB2, ElasticSearch. TDD with TestNG/EasyMock." />
+            <TimelineRow y="2016–2017" r="Founder & Developer" c="food-algorithm.de (own product)" d="Solo-built nutrition optimizer: Java + Angular 2 + TypeScript + PostgreSQL. Implemented Simplex and Mixed Integer Programming." />
+            <TimelineRow y="2014–2015" r="Java Developer — EV Research" c="Move About GmbH (RWTH Aachen / E.ON)" d="Sole dev on a research data aggregation app. Scaled PostgreSQL to 100+ GB of EV telemetry; reverse-engineered CAN networks." />
+            <TimelineRow y="2007–2012" r="Java Developer (Apprenticeship → Mid-level)" c="Neusta GmbH · Bremen" d="Web auction platform. Built company-wide microservice for unified billing. Completed Fachinformatiker apprenticeship." last />
+          </div>
+
+          <div style={{ height: 80 }} />
+
+          <div className="section-num" style={{ marginBottom: 8 }}>§ 04 / {t('sectionAlso')}</div>
+          <h2 style={{ fontFamily: 'var(--mono)', fontSize: 32, fontWeight: 700, margin: '0 0 24px', letterSpacing: '-0.02em' }}>{t('alsoTitle')}</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <PhotoCard src="/assets/dive-scooter.jpg" cap="My friend Chris on his dive scooter. I wrote the firmware for the prototype next to it." />
+            <PhotoCard src="/assets/portrait-daisy.jpg" cap="Daisy behind the ear. Summer 2023." />
+            <PhotoCard src="/assets/portrait-hat.jpg" cap="A cow-themed ice cream stop somewhere in Central America." />
+            <PhotoCard src="/assets/portrait-park.jpg" cap="In the park, Germany. Summer light, pre-Belize era." />
           </div>
         </div>
       </div>
+
+      <div style={{ height: 100 }} />
     </div>
   );
 }

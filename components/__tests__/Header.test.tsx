@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Header } from '../Header';
 
-// Mock i18n/navigation to prevent next-intl import issues
 jest.mock('@/i18n/navigation', () => ({
   routing: {
     locales: ['en', 'de', 'es'] as const,
@@ -13,7 +12,8 @@ jest.mock('@/i18n/navigation', () => ({
     replace: jest.fn(),
     prefetch: jest.fn(),
   }),
-  usePathname: () => '/',
+  Link: ({ href, children, ...props }: { href: string; children: React.ReactNode; [key: string]: unknown }) =>
+    <a href={href} {...props}>{children}</a>,
 }));
 
 jest.mock('next-intl', () => ({
@@ -22,25 +22,26 @@ jest.mock('next-intl', () => ({
 
 jest.mock('next/navigation', () => ({
   useParams: () => ({ locale: 'en' }),
+  usePathname: () => '/',
 }));
 
 describe('Header', () => {
-  const renderHeader = () => {
-    return render(<Header />);
-  };
-
-  it('renders the site title', () => {
-    renderHeader();
-    expect(screen.getByText('Carlos Freund')).toBeInTheDocument();
+  it('renders the navigation element', () => {
+    render(<Header />);
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
-  it('renders language switcher', () => {
-    renderHeader();
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  it('renders language switcher buttons', () => {
+    render(<Header />);
+    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'DE' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'ES' })).toBeInTheDocument();
   });
 
   it('renders navigation links', () => {
-    renderHeader();
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
+    render(<Header />);
+    expect(screen.getByText('work')).toBeInTheDocument();
+    expect(screen.getByText('blog')).toBeInTheDocument();
+    expect(screen.getByText('contact')).toBeInTheDocument();
   });
 });

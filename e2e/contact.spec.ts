@@ -1,35 +1,30 @@
 import { test, expect } from '@playwright/test';
-import { I18nHelper } from './utils/test-helpers';
 
 test.describe('Contact Form Tests', () => {
   const languages = [
-    { code: 'en', submitText: 'Send Message' },
-    { code: 'de', submitText: 'Nachricht senden' },
-    { code: 'es', submitText: 'Enviar mensaje' },
+    { code: 'en', submitText: /send message/i },
+    { code: 'de', submitText: /nachricht senden/i },
+    { code: 'es', submitText: /enviar mensaje/i },
   ];
 
   for (const lang of languages) {
     test.describe(`Contact form in ${lang.code}`, () => {
       test('form has all required fields', async ({ page }) => {
-        const i18n = new I18nHelper(page);
         await page.goto(`/${lang.code}/contact`);
-        
-        await expect(page.getByLabel(/Name|Nombre/)).toBeVisible();
-        await expect(page.getByLabel(/E-Mail|Email|Correo/)).toBeVisible();
-        await expect(page.getByLabel(/Nachricht|Message|Mensaje/)).toBeVisible();
+
+        await expect(page.getByLabel(/name|nombre/i)).toBeVisible();
+        await expect(page.getByLabel(/e-mail|email|correo/i)).toBeVisible();
+        await expect(page.getByLabel(/nachricht|message|mensaje/i)).toBeVisible();
       });
 
       test('can fill and submit form', async ({ page }) => {
-        const i18n = new I18nHelper(page);
         await page.goto(`/${lang.code}/contact`);
-        
-        // Fill form fields
-        await page.getByLabel(/Name|Nombre/).fill('Test User');
-        await page.getByLabel(/E-Mail|Email|Correo/).fill('test@example.com');
-        await page.getByLabel(/Nachricht|Message|Mensaje/).fill('This is a test message');
-        
-        // Submit button should be visible and enabled
-        const submitButton = page.getByRole('button', { name: new RegExp(lang.submitText) });
+
+        await page.getByLabel(/name|nombre/i).fill('Test User');
+        await page.getByLabel(/e-mail|email|correo/i).fill('test@example.com');
+        await page.getByLabel(/nachricht|message|mensaje/i).fill('This is a test message');
+
+        const submitButton = page.getByRole('button', { name: lang.submitText });
         await expect(submitButton).toBeVisible();
         await expect(submitButton).toBeEnabled();
       });
