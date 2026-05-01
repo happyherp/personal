@@ -32,21 +32,18 @@ export class I18nHelper {
         home: 'Home',
         about: 'About',
         work: 'Work',
-        blog: 'Blog',
         contact: 'Contact',
       },
       de: {
         home: 'Start',
         about: 'Über mich',
         work: 'Arbeiten',
-        blog: 'Blog',
         contact: 'Kontakt',
       },
       es: {
         home: 'Inicio',
         about: 'Acerca de',
         work: 'Trabajos',
-        blog: 'Blog',
         contact: 'Contacto',
       },
     };
