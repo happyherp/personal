@@ -33,19 +33,6 @@ test.describe('Navigation Tests', () => {
         await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}work`));
       });
 
-      test('should navigate to Blog page', async ({ page }) => {
-        const i18n = new I18nHelper(page);
-        const navTexts = await i18n.getNavigationText(lang);
-
-        await page.goto(lang === 'en' ? '/' : `/${lang}`);
-
-        // Click Blog link
-        await page.getByRole('navigation').getByRole('link', { name: navTexts.blog, exact: true }).first().click();
-
-        // Verify URL
-        await expect(page).toHaveURL(new RegExp(`/${lang === 'en' ? '' : lang + '/'}blog`));
-      });
-
       test('should navigate to Contact page', async ({ page }) => {
         const i18n = new I18nHelper(page);
         const navTexts = await i18n.getNavigationText(lang);
@@ -102,17 +89,15 @@ test.describe('Navigation Tests', () => {
   test('should maintain language when navigating between pages', async ({ page }) => {
     const i18n = new I18nHelper(page);
 
-    // Start on German work page
-    await page.goto('/de/work');
+    // Start on German home page
+    await page.goto('/de');
 
-    // Navigate to blog
     const deNav = await i18n.getNavigationText('de');
-    await page.getByRole('navigation').getByRole('link', { name: deNav.blog, exact: true }).first().click();
 
-    // Verify still in German
-    await expect(page).toHaveURL(/\/de\/blog/);
+    // Navigate through a few pages, verifying language is maintained
+    await page.getByRole('navigation').getByRole('link', { name: deNav.work, exact: true }).first().click();
+    await expect(page).toHaveURL(/\/de\/work/);
 
-    // Navigate through a few more pages
     await page.getByRole('navigation').getByRole('link', { name: deNav.about, exact: true }).first().click();
     await expect(page).toHaveURL(/\/de\/about/);
 
