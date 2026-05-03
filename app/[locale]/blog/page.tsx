@@ -15,32 +15,14 @@ interface BlogPost {
 }
 
 async function getBlogPosts(): Promise<BlogPost[]> {
-  // For now, return static blog posts
-  // In the future, this could read from content/blog/en directory
   return [
     {
-      slug: "why-i-left-80k-job",
-      title: "Why I Left a €80k Job to Freelance from Belize",
-      description: "The real story behind walking away from corporate security to build a location-independent career in AI integration.",
-      date: "2026-04-20",
-      tags: ["Career", "Remote Work", "AI", "Freelancing"],
-      readingTime: 8
-    },
-    {
-      slug: "medical-chatbot-breach",
-      title: "I Found a Data Breach in a Medical Chatbot — Here's What Happened",
-      description: "How a routine security test revealed critical vulnerabilities in an AI-powered medical e-commerce platform and what I learned about LLM safety.",
-      date: "2026-04-18",
-      tags: ["Security", "AI", "LLM", "Ethical Hacking"],
-      readingTime: 12
-    },
-    {
-      slug: "openhands-contributions",
-      title: "What I Learned Contributing to OpenHands",
-      description: "12 merged pull requests later, here are the key insights about AI agent architecture, prompt caching, and building production-ready LLM systems.",
-      date: "2026-04-15",
-      tags: ["Open Source", "AI", "OpenHands", "LLM"],
-      readingTime: 10
+      slug: "placeholder",
+      title: "[Placeholder] First Blog Post Coming Soon",
+      description: "This is a placeholder. Real blog posts will be added here.",
+      date: "2026-05-01",
+      tags: ["Placeholder"],
+      readingTime: 1
     }
   ];
 }
