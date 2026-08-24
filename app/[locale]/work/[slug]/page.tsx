@@ -210,6 +210,7 @@ const projectDetails: Record<string, ProjectDetail> = {
     `,
     tags: ["Product Development", "Bubble.io", "Startup", "Instagram API"],
     links: [],
+    videoId: "oZBWXr5ZpDU",
     gallery: [
       { src: "/shoqu1.png", alt: "Shoqu login page for marketers and influencers" },
       { src: "/shoqu2.png", alt: "Instagram photo picker letting influencers add posts to their Shoqu profile" }
