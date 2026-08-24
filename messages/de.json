@@ -18,7 +18,6 @@
     "home": "Start",
     "about": "Über mich",
     "work": "Arbeiten",
-    "blog": "Blog",
     "contact": "Kontakt"
   },
   "About": {
@@ -30,11 +29,6 @@
   },
   "Work": {
     "title": "Arbeit & Portfolio"
-  },
-  "Blog": {
-    "title": "Blog",
-    "readingTime": "{minutes} Min. Lesezeit",
-    "tags": "Tags"
   },
   "Contact": {
     "title": "Kontakt",

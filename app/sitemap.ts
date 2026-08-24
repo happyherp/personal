@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://carlosfreund.com'; // Change to actual url
+  const baseUrl = 'https://www.carlosfreund.dev';
   
   // These are the core routes
   const routes = [

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 interface ProjectDetail {
   id: string;
@@ -260,6 +261,34 @@ const projectDetails: Record<string, ProjectDetail> = {
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projectDetails[slug];
+
+  if (!project) {
+    return {};
+  }
+
+  const title = `${project.title} — Carlos Freund`;
+  const ogImage = project.image?.src ?? project.gallery?.[0]?.src;
+
+  return {
+    title,
+    description: project.description,
+    openGraph: {
+      title,
+      description: project.description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: project.description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+  };
 }
 
 export default async function ProjectDetail({ params }: PageProps) {
