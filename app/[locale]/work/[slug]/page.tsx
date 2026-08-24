@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 interface ProjectDetail {
   id: string;
@@ -260,6 +261,20 @@ const projectDetails: Record<string, ProjectDetail> = {
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projectDetails[slug];
+
+  if (!project) {
+    return {};
+  }
+
+  return {
+    title: `${project.title} — Carlos Freund`,
+    description: project.description,
+  };
 }
 
 export default async function ProjectDetail({ params }: PageProps) {

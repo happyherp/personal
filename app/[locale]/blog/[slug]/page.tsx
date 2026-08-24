@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 interface BlogPost {
   slug: string;
@@ -27,6 +28,22 @@ const blogPosts: Record<string, BlogPost> = {
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = blogPosts[slug];
+
+  if (!post) {
+    return {};
+  }
+
+  const description = post.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
+
+  return {
+    title: `${post.title} — Carlos Freund`,
+    description,
+  };
 }
 
 export default async function BlogPost({ params }: PageProps) {
