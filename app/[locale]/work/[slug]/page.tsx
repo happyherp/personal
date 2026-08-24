@@ -8,6 +8,8 @@ interface ProjectDetail {
   fullDescription: string;
   tags: string[];
   links: { label: string; url: string }[];
+  videoId?: string;
+  image?: { src: string; alt: string };
 }
 
 const projectDetails: Record<string, ProjectDetail> = {
@@ -125,7 +127,9 @@ const projectDetails: Record<string, ProjectDetail> = {
     tags: ["C++", "Embedded", "ESP32", "PlatformIO", "VESC"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/BubTec/DPVControl" }
-    ]
+    ],
+    image: { src: "/chris-divescooter.jpg", alt: "Diver using the DPVControl-powered dive propulsion vehicle underwater" },
+    videoId: "6myfqZKiGTU"
   },
   "ai-shell-loop": {
     id: "ai-shell-loop",
@@ -263,16 +267,39 @@ export default async function ProjectDetail({ params }: PageProps) {
         
         <div className="flex flex-wrap gap-2 mb-8">
           {project.tags.map((tag) => (
-            <span 
-              key={tag} 
+            <span
+              key={tag}
               className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium"
             >
               {tag}
             </span>
           ))}
         </div>
-        
-        <div 
+
+        {project.image && (
+          <div className="mb-8 w-full overflow-hidden rounded-lg shadow-sm">
+            <img
+              src={project.image.src}
+              alt={project.image.alt}
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+
+        {project.videoId && (
+          <div className="mb-12 aspect-video w-full overflow-hidden rounded-lg shadow-sm">
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${project.videoId}`}
+              title={`${project.title} — demo video`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        )}
+
+        <div
           className="prose prose-lg dark:prose-invert max-w-none mb-12"
           dangerouslySetInnerHTML={{ __html: project.fullDescription }}
         />
