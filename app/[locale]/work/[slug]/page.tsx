@@ -9,7 +9,6 @@ interface ProjectDetail {
   tags: string[];
   links: { label: string; url: string }[];
   videoId?: string;
-  image?: { src: string; alt: string };
 }
 
 const projectDetails: Record<string, ProjectDetail> = {
@@ -127,9 +126,7 @@ const projectDetails: Record<string, ProjectDetail> = {
     tags: ["C++", "Embedded", "ESP32", "PlatformIO", "VESC"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/BubTec/DPVControl" }
-    ],
-    image: { src: "/chris-divescooter.jpg", alt: "Diver using the DPVControl-powered dive propulsion vehicle underwater" },
-    videoId: "6myfqZKiGTU"
+    ]
   },
   "food-algorithm": {
     id: "food-algorithm",
@@ -202,16 +199,6 @@ export default async function ProjectDetail({ params }: PageProps) {
             </span>
           ))}
         </div>
-
-        {project.image && (
-          <div className="mb-8 w-full overflow-hidden rounded-lg shadow-sm">
-            <img
-              src={project.image.src}
-              alt={project.image.alt}
-              className="w-full h-auto"
-            />
-          </div>
-        )}
 
         {project.videoId && (
           <div className="mb-12 aspect-video w-full overflow-hidden rounded-lg shadow-sm">
