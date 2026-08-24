@@ -10,6 +10,7 @@ interface ProjectDetail {
   links: { label: string; url: string }[];
   videoId?: string;
   image?: { src: string; alt: string };
+  gallery?: { src: string; alt: string }[];
 }
 
 const projectDetails: Record<string, ProjectDetail> = {
@@ -183,7 +184,8 @@ const projectDetails: Record<string, ProjectDetail> = {
       <p>Details that could identify the company or its customers are withheld out of respect for the disclosure process and affected users.</p>
     `,
     tags: ["Security", "AI Security", "Prompt Injection", "GDPR", "Ethical Hacking"],
-    links: []
+    links: [],
+    image: { src: "/hack-blacked.png", alt: "Redacted chat log showing the chatbot exposing a customer's order data" }
   },
   "food-algorithm": {
     id: "food-algorithm",
@@ -210,7 +212,15 @@ const projectDetails: Record<string, ProjectDetail> = {
       <p>This was my first experience taking a product from idea to production as a solo founder, covering everything from algorithm design to deployment and user-facing UX.</p>
     `,
     tags: ["Java", "Algorithms", "Angular", "PostgreSQL", "Optimization"],
-    links: []
+    links: [],
+    gallery: [
+      { src: "/food-algorith1.png", alt: "food-algorithm.de landing page — Simplex Nutrition Optimizer" },
+      { src: "/food-algorith2.png", alt: "Step 1: Personal Information form — sex, age, weight, activity level" },
+      { src: "/food-algorith3.png", alt: "Step 2: Nutrition-Target table with computed min/max values per nutrient" },
+      { src: "/food-algorith4.png", alt: "Step 2 continued: mineral targets (Magnesium, Calcium, Sodium, etc.) and Optimize button" },
+      { src: "/food-algorith5.png", alt: "Step 3: Result of computation — selected foods, weights, and total cost" },
+      { src: "/food-algorith6.png", alt: "Nutrient breakdown for a single selected food, with option to remove and recalculate" }
+    ]
   },
   shoqu: {
     id: "shoqu",
@@ -234,7 +244,11 @@ const projectDetails: Record<string, ProjectDetail> = {
       <p>As co-founder, I was responsible for product development — translating the two-sided marketplace concept into a working platform, from user roles and matching logic to the third-party API integrations that made influencer profiles self-updating.</p>
     `,
     tags: ["Product Development", "Bubble.io", "Startup", "Instagram API"],
-    links: []
+    links: [],
+    gallery: [
+      { src: "/shoqu1.png", alt: "Shoqu login page for marketers and influencers" },
+      { src: "/shoqu2.png", alt: "Instagram photo picker letting influencers add posts to their Shoqu profile" }
+    ]
   }
 };
 
@@ -283,6 +297,16 @@ export default async function ProjectDetail({ params }: PageProps) {
               alt={project.image.alt}
               className="w-full h-auto"
             />
+          </div>
+        )}
+
+        {project.gallery && (
+          <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {project.gallery.map((img) => (
+              <div key={img.src} className="overflow-hidden rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <img src={img.src} alt={img.alt} className="w-full h-auto" />
+              </div>
+            ))}
           </div>
         )}
 
