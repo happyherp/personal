@@ -271,9 +271,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
+  const title = `${project.title} — Carlos Freund`;
+  const ogImage = project.image?.src ?? project.gallery?.[0]?.src;
+
   return {
-    title: `${project.title} — Carlos Freund`,
+    title,
     description: project.description,
+    openGraph: {
+      title,
+      description: project.description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: project.description,
+      images: ogImage ? [ogImage] : undefined,
+    },
   };
 }
 
