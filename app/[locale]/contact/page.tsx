@@ -9,7 +9,7 @@ const CalendlyEmbed = ({ t }: { t: any }) => {
       <h3 className="text-lg font-semibold mb-4">{t('scheduleCall')}</h3>
       <div className="h-96 bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
         <a 
-          href="https://calendly.com/carlosfreund/30min"
+          href="https://calendly.com/carlosfreund/1-hour-meeting"
           target="_blank" 
           rel="noopener noreferrer"
           className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors inline-flex items-center"

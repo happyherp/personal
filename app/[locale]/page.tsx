@@ -30,7 +30,7 @@ export default function Home() {
               {t('ctaWork')}
             </Link>
             <a 
-              href="https://calendly.com/carlosfreund/30min" 
+              href="https://calendly.com/carlosfreund/1-hour-meeting"
               target="_blank" 
               rel="noopener noreferrer"
               className="px-8 py-3 border border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 text-gray-900 dark:text-gray-100 font-medium rounded-lg transition-colors"
