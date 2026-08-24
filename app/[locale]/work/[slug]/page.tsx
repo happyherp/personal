@@ -187,41 +187,6 @@ const projectDetails: Record<string, ProjectDetail> = {
     links: [],
     image: { src: "/hack-blacked.png", alt: "Redacted chat log showing the chatbot exposing a customer's order data" }
   },
-  "food-algorithm": {
-    id: "food-algorithm",
-    title: "Simplex Nutrition Optimizer — Solo-Founded Web App",
-    description: "Solo-founded web app applying linear programming to find the cheapest possible diet",
-    fullDescription: `
-      <h2>Project Overview</h2>
-      <p>I built and launched food-algorithm.de as a solo founder, applying the Simplex linear programming algorithm to solve a concrete problem: finding the cheapest possible diet that still meets all of a person's nutritional requirements.</p>
-
-      <h2>How It Worked</h2>
-      <ul>
-        <li><strong>Personalized Targets:</strong> The system computed individual nutritional targets across 30+ constraints (calories, macronutrients, vitamins, minerals) based on user data</li>
-        <li><strong>Optimization Engine:</strong> A custom Simplex-based linear programming solver searched a food database for the minimum-cost combination of foods satisfying every constraint simultaneously</li>
-        <li><strong>Full-Stack Delivery:</strong> Built and shipped the entire product end-to-end, from algorithm design to a public-facing web app</li>
-      </ul>
-
-      <h2>Technical Implementation</h2>
-      <ul>
-        <li><strong>Backend & Algorithm:</strong> Java implementation of the Simplex method for constrained optimization</li>
-        <li><strong>Frontend:</strong> Angular</li>
-        <li><strong>Data Storage:</strong> PostgreSQL</li>
-      </ul>
-
-      <p>This was my first experience taking a product from idea to production as a solo founder, covering everything from algorithm design to deployment and user-facing UX.</p>
-    `,
-    tags: ["Java", "Algorithms", "Angular", "PostgreSQL", "Optimization"],
-    links: [],
-    gallery: [
-      { src: "/food-algorith1.png", alt: "food-algorithm.de landing page — Simplex Nutrition Optimizer" },
-      { src: "/food-algorith2.png", alt: "Step 1: Personal Information form — sex, age, weight, activity level" },
-      { src: "/food-algorith3.png", alt: "Step 2: Nutrition-Target table with computed min/max values per nutrient" },
-      { src: "/food-algorith4.png", alt: "Step 2 continued: mineral targets (Magnesium, Calcium, Sodium, etc.) and Optimize button" },
-      { src: "/food-algorith5.png", alt: "Step 3: Result of computation — selected foods, weights, and total cost" },
-      { src: "/food-algorith6.png", alt: "Nutrient breakdown for a single selected food, with option to remove and recalculate" }
-    ]
-  },
   shoqu: {
     id: "shoqu",
     title: "Shoqu — Influencer-Marketer Matching Platform (Co-Founder)",
@@ -248,6 +213,46 @@ const projectDetails: Record<string, ProjectDetail> = {
     gallery: [
       { src: "/shoqu1.png", alt: "Shoqu login page for marketers and influencers" },
       { src: "/shoqu2.png", alt: "Instagram photo picker letting influencers add posts to their Shoqu profile" }
+    ]
+  },
+  "food-algorithm": {
+    id: "food-algorithm",
+    title: "Simplex Nutrition Optimizer — Solo-Founded Web App",
+    description: "Built and launched food-algorithm.de as a solo founder. Applied the Simplex linear programming algorithm to find the cheapest possible diet meeting all nutritional requirements.",
+    fullDescription: `
+      <h2>The Problem</h2>
+      <p>Eating a nutritionally complete diet requires hitting dozens of targets at once — vitamins, minerals, macros — while keeping cost down. Doing that by hand is effectively an optimization problem with 30+ simultaneous constraints. I built <a href="https://food-algorithm.de" target="_blank" rel="noopener noreferrer">food-algorithm.de</a> to solve it automatically.</p>
+
+      <h2>How It Works</h2>
+      <ol>
+        <li><strong>Personal Information</strong> — the user enters sex, age, weight, and activity level (1.2–1.8), plus lifestyle factors like smoking, which shift daily requirements.</li>
+        <li><strong>Nutrient Requirements</strong> — from that input, the app computes personalized min/max targets across 30+ nutrients (vitamins, minerals, macros — e.g. Niacin, Magnesium, Calcium, Sodium, Potassium, Iron, Iodine, Selenium), each individually editable before optimizing.</li>
+        <li><strong>Optimization</strong> — the Simplex linear programming algorithm searches the space of available foods for the minimum-cost combination that satisfies every constraint simultaneously.</li>
+      </ol>
+
+      <h2>Results & Interaction</h2>
+      <p>The result shows exactly which foods were selected and how much of each nutrient target they cover — for example, a serving of raw broccoli might supply 37% of the Vitamin C requirement, 17% of Beta-Carotene, and 13% of Folate. Users can remove any ingredient they don't want (allergy, dislike, availability) and instantly recompute the optimal diet around the remaining foods.</p>
+
+      <h2>Technical Implementation</h2>
+      <ul>
+        <li><strong>Backend:</strong> Java, implementing the Simplex algorithm for linear programming</li>
+        <li><strong>Frontend:</strong> Angular</li>
+        <li><strong>Database:</strong> PostgreSQL for food and nutrient data</li>
+        <li><strong>Role:</strong> Solo founder — designed, built, and launched the product end to end</li>
+      </ul>
+    `,
+    tags: ["Java", "Algorithms", "Angular", "PostgreSQL", "Optimization"],
+    links: [
+      { label: "Live Site: food-algorithm.de", url: "https://food-algorithm.de" }
+    ],
+    videoId: "0nfaHVdiCFU",
+    gallery: [
+      { src: "/food-algorith1.png", alt: "food-algorithm.de landing page — Simplex Nutrition Optimizer" },
+      { src: "/food-algorith2.png", alt: "Step 1: Personal Information form — sex, age, weight, activity level" },
+      { src: "/food-algorith3.png", alt: "Step 2: Nutrition-Target table with computed min/max values per nutrient" },
+      { src: "/food-algorith4.png", alt: "Step 2 continued: mineral targets (Magnesium, Calcium, Sodium, etc.) and Optimize button" },
+      { src: "/food-algorith5.png", alt: "Step 3: Result of computation — selected foods, weights, and total cost" },
+      { src: "/food-algorith6.png", alt: "Nutrient breakdown for a single selected food, with option to remove and recalculate" }
     ]
   }
 };
