@@ -8,6 +8,7 @@ interface ProjectDetail {
   fullDescription: string;
   tags: string[];
   links: { label: string; url: string }[];
+  videoId?: string;
 }
 
 const projectDetails: Record<string, ProjectDetail> = {
@@ -126,6 +127,38 @@ const projectDetails: Record<string, ProjectDetail> = {
     links: [
       { label: "GitHub Repository", url: "https://github.com/BubTec/DPVControl" }
     ]
+  },
+  "food-algorithm": {
+    id: "food-algorithm",
+    title: "Simplex Nutrition Optimizer — Solo-Founded Web App",
+    description: "Built and launched food-algorithm.de as a solo founder. Applied the Simplex linear programming algorithm to find the cheapest possible diet meeting all nutritional requirements.",
+    fullDescription: `
+      <h2>The Problem</h2>
+      <p>Eating a nutritionally complete diet requires hitting dozens of targets at once — vitamins, minerals, macros — while keeping cost down. Doing that by hand is effectively an optimization problem with 30+ simultaneous constraints. I built <a href="https://food-algorithm.de" target="_blank" rel="noopener noreferrer">food-algorithm.de</a> to solve it automatically.</p>
+
+      <h2>How It Works</h2>
+      <ol>
+        <li><strong>Personal Information</strong> — the user enters sex, age, weight, and activity level (1.2–1.8), plus lifestyle factors like smoking, which shift daily requirements.</li>
+        <li><strong>Nutrient Requirements</strong> — from that input, the app computes personalized min/max targets across 30+ nutrients (vitamins, minerals, macros — e.g. Niacin, Magnesium, Calcium, Sodium, Potassium, Iron, Iodine, Selenium), each individually editable before optimizing.</li>
+        <li><strong>Optimization</strong> — the Simplex linear programming algorithm searches the space of available foods for the minimum-cost combination that satisfies every constraint simultaneously.</li>
+      </ol>
+
+      <h2>Results & Interaction</h2>
+      <p>The result shows exactly which foods were selected and how much of each nutrient target they cover — for example, a serving of raw broccoli might supply 37% of the Vitamin C requirement, 17% of Beta-Carotene, and 13% of Folate. Users can remove any ingredient they don't want (allergy, dislike, availability) and instantly recompute the optimal diet around the remaining foods.</p>
+
+      <h2>Technical Implementation</h2>
+      <ul>
+        <li><strong>Backend:</strong> Java, implementing the Simplex algorithm for linear programming</li>
+        <li><strong>Frontend:</strong> Angular</li>
+        <li><strong>Database:</strong> PostgreSQL for food and nutrient data</li>
+        <li><strong>Role:</strong> Solo founder — designed, built, and launched the product end to end</li>
+      </ul>
+    `,
+    tags: ["Java", "Algorithms", "Angular", "PostgreSQL", "Optimization"],
+    links: [
+      { label: "Live Site: food-algorithm.de", url: "https://food-algorithm.de" }
+    ],
+    videoId: "0nfaHVdiCFU"
   }
 };
 
@@ -158,16 +191,29 @@ export default async function ProjectDetail({ params }: PageProps) {
         
         <div className="flex flex-wrap gap-2 mb-8">
           {project.tags.map((tag) => (
-            <span 
-              key={tag} 
+            <span
+              key={tag}
               className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium"
             >
               {tag}
             </span>
           ))}
         </div>
-        
-        <div 
+
+        {project.videoId && (
+          <div className="mb-12 aspect-video w-full overflow-hidden rounded-lg shadow-sm">
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${project.videoId}`}
+              title={`${project.title} — demo video`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        )}
+
+        <div
           className="prose prose-lg dark:prose-invert max-w-none mb-12"
           dangerouslySetInnerHTML={{ __html: project.fullDescription }}
         />
