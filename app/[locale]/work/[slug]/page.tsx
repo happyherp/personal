@@ -9,6 +9,8 @@ interface ProjectDetail {
   tags: string[];
   links: { label: string; url: string }[];
   videoId?: string;
+  image?: { src: string; alt: string };
+  gallery?: { src: string; alt: string }[];
 }
 
 const projectDetails: Record<string, ProjectDetail> = {
@@ -126,6 +128,92 @@ const projectDetails: Record<string, ProjectDetail> = {
     tags: ["C++", "Embedded", "ESP32", "PlatformIO", "VESC"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/BubTec/DPVControl" }
+    ],
+    image: { src: "/chris-divescooter.jpg", alt: "Diver using the DPVControl-powered dive propulsion vehicle underwater" },
+    videoId: "6myfqZKiGTU"
+  },
+  "ai-shell-loop": {
+    id: "ai-shell-loop",
+    title: "ai-shell-loop: AI Agent that Generates & Executes Shell Commands",
+    description: "Built in September 2024 — two months before Claude Code launched",
+    fullDescription: `
+      <h2>Project Overview</h2>
+      <p>ai-shell-loop is a command-line AI agent I built in September 2024 — two months before Claude Code launched. It lets you describe a goal in plain English; the tool calls GPT to generate bash commands, executes them, observes the results, and iterates until the goal is reached.</p>
+
+      <h2>How It Works</h2>
+      <ul>
+        <li><strong>Natural Language Input:</strong> Describe what you want done, e.g. "create a python program that lists primes below 100"</li>
+        <li><strong>Command Generation:</strong> The tool calls the OpenAI API to translate the goal into concrete shell commands</li>
+        <li><strong>Execution & Observation:</strong> Commands run locally, and their output feeds back into the loop</li>
+        <li><strong>Iteration:</strong> If a command fails or the goal isn't met, the agent tries alternative approaches until it succeeds</li>
+      </ul>
+
+      <h2>Technical Details</h2>
+      <ul>
+        <li><strong>Language:</strong> Python, packaged and published on PyPI</li>
+        <li><strong>Distribution:</strong> Installable via pip, runs on Linux and macOS</li>
+        <li><strong>License:</strong> Apache License 2.0</li>
+      </ul>
+
+      <p>Building an agentic shell loop before agentic coding tools went mainstream gave me early, hands-on experience with the exact problem space — goal decomposition, tool execution, and iterative self-correction — that later became central to tools like Claude Code.</p>
+    `,
+    tags: ["Python", "AI Agent", "OpenAI API", "CLI", "PyPI"],
+    links: [
+      { label: "GitHub Repository", url: "https://github.com/happyherp/ai-shell-loop" },
+      { label: "PyPI Package", url: "https://pypi.org/project/ai-shell-loop/" }
+    ]
+  },
+  "llm-security": {
+    id: "llm-security",
+    title: "Responsible Disclosure: LLM Chatbot Data Breach (Medical Sector)",
+    description: "Critical data privacy vulnerability found in an AI-powered customer support chatbot",
+    fullDescription: `
+      <h2>The Discovery</h2>
+      <p>While evaluating an AI-powered customer support chatbot at a regulated medical e-commerce company, I discovered a critical data privacy vulnerability: the underlying LLM had unrestricted access to the company's customer database, exposing sensitive personal and medical-adjacent order data through crafted prompts.</p>
+
+      <h2>The Response</h2>
+      <ul>
+        <li><strong>Responsible Disclosure:</strong> Reported the vulnerability directly to the company through proper channels</li>
+        <li><strong>Escalation:</strong> When the issue was not adequately remediated, escalated the matter to the Bavarian Data Protection Authority (Bayerisches Landesamt für Datenschutzaufsicht)</li>
+        <li><strong>Regulatory Context:</strong> The exposure implicated GDPR obligations around personal data processing and data minimization</li>
+      </ul>
+
+      <h2>Why It Mattered</h2>
+      <p>This case is a concrete example of a class of risk that becomes common as companies bolt LLMs onto existing systems without proper access controls: giving a language model direct, unscoped database access effectively removes the authorization boundary that would normally protect customer data. It reinforced my focus on building AI integrations with the same rigor — scoped credentials, least privilege, and auditability — that any production backend system requires.</p>
+
+      <p>Details that could identify the company or its customers are withheld out of respect for the disclosure process and affected users.</p>
+    `,
+    tags: ["Security", "AI Security", "Prompt Injection", "GDPR", "Ethical Hacking"],
+    links: [],
+    image: { src: "/hack-blacked.png", alt: "Redacted chat log showing the chatbot exposing a customer's order data" }
+  },
+  shoqu: {
+    id: "shoqu",
+    title: "Shoqu — Influencer-Marketer Matching Platform (Co-Founder)",
+    description: "Platform connecting social media influencers with marketers for sponsored content deals",
+    fullDescription: `
+      <h2>Project Overview</h2>
+      <p>I co-founded Shoqu, a platform connecting social media influencers with marketers looking to run sponsored content deals. The platform matched influencers and brands, and managed the booking and collaboration workflow between them.</p>
+
+      <h2>Key Features</h2>
+      <ul>
+        <li><strong>Instagram API Integration:</strong> Allowed influencers to pull their existing posts directly into their profiles, showcasing past content and engagement</li>
+        <li><strong>Dual User Roles:</strong> Separate experiences and dashboards for influencers and marketers</li>
+        <li><strong>Booking Flow:</strong> End-to-end flow for marketers to discover, evaluate, and book influencers for campaigns</li>
+        <li><strong>Analytics:</strong> Dashboards surfacing engagement and campaign performance data</li>
+      </ul>
+
+      <h2>Technical Implementation</h2>
+      <p>Built on Bubble.io to move quickly as a small team, with a custom integration against the Instagram API to sync influencer content and metrics.</p>
+
+      <p>As co-founder, I was responsible for product development — translating the two-sided marketplace concept into a working platform, from user roles and matching logic to the third-party API integrations that made influencer profiles self-updating.</p>
+    `,
+    tags: ["Product Development", "Bubble.io", "Startup", "Instagram API"],
+    links: [],
+    videoId: "oZBWXr5ZpDU",
+    gallery: [
+      { src: "/shoqu1.png", alt: "Shoqu login page for marketers and influencers" },
+      { src: "/shoqu2.png", alt: "Instagram photo picker letting influencers add posts to their Shoqu profile" }
     ]
   },
   "food-algorithm": {
@@ -158,7 +246,15 @@ const projectDetails: Record<string, ProjectDetail> = {
     links: [
       { label: "Live Site: food-algorithm.de", url: "https://food-algorithm.de" }
     ],
-    videoId: "0nfaHVdiCFU"
+    videoId: "0nfaHVdiCFU",
+    gallery: [
+      { src: "/food-algorith1.png", alt: "food-algorithm.de landing page — Simplex Nutrition Optimizer" },
+      { src: "/food-algorith2.png", alt: "Step 1: Personal Information form — sex, age, weight, activity level" },
+      { src: "/food-algorith3.png", alt: "Step 2: Nutrition-Target table with computed min/max values per nutrient" },
+      { src: "/food-algorith4.png", alt: "Step 2 continued: mineral targets (Magnesium, Calcium, Sodium, etc.) and Optimize button" },
+      { src: "/food-algorith5.png", alt: "Step 3: Result of computation — selected foods, weights, and total cost" },
+      { src: "/food-algorith6.png", alt: "Nutrient breakdown for a single selected food, with option to remove and recalculate" }
+    ]
   }
 };
 
@@ -199,6 +295,26 @@ export default async function ProjectDetail({ params }: PageProps) {
             </span>
           ))}
         </div>
+
+        {project.image && (
+          <div className="mb-8 w-full overflow-hidden rounded-lg shadow-sm">
+            <img
+              src={project.image.src}
+              alt={project.image.alt}
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+
+        {project.gallery && (
+          <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {project.gallery.map((img) => (
+              <div key={img.src} className="overflow-hidden rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <img src={img.src} alt={img.alt} className="w-full h-auto" />
+              </div>
+            ))}
+          </div>
+        )}
 
         {project.videoId && (
           <div className="mb-12 aspect-video w-full overflow-hidden rounded-lg shadow-sm">
